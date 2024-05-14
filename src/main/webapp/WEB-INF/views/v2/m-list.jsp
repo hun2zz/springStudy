@@ -15,7 +15,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
   </head>
   <body>
     <ul>
-      <h1>MVC버전 목록보기</h1>
+      <h1>프론트컨트롤러 v2 목록보기</h1>
 
       <c:forEach var="m" items="${memberList}">
         <li>
@@ -27,6 +27,6 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
       </c:forEach>
     </ul>
 
-    <a href="/chap02/join">새로운 회원가입하기</a>
+    <a href="/chap02/v2/join">새로운 회원가입하기</a>
   </body>
 </html>
