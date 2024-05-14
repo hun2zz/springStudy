@@ -13,5 +13,6 @@ uri="http://java.sun.com/jsp/jstl/core" %>
     <a href="/chap01/join">회원가입하기</a> <br />
     <a href="/chap02/v1/join">회원가입하기 front v1 버전</a> <br />
     <a href="/chap02/v2/join">회원가입하기 front v2 버전</a> <br />
+    <a href="/chap02/v3/join">회원가입하기 front v3 버전</a> <br />
   </body>
 </html>
