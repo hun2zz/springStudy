@@ -52,11 +52,14 @@ public class ScoreController {
         //다시 조회로 돌아가야 저장된 데이터를 볼 수 있음.
         return "redirect:/score/list";
     }
-    @PostMapping("/remove")
-    public String remove() {
-        System.out.println("/score/remove : POST!");
-        return "";
+    @GetMapping("/remove")
+    public String remove(long stuNum, Model model) {
+        ScoreJdbcRepository repository = new ScoreJdbcRepository();
+        repository.removeOne(stuNum);
+        return "redirect:/score/list";
     }
+
+
     @GetMapping("/detail")
     public String detail(long stuNum, Model model) {
         ScoreJdbcRepository repository = new ScoreJdbcRepository();
