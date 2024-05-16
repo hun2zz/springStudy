@@ -107,14 +107,24 @@ uri="http://java.sun.com/jsp/jstl/core" %>
               <div><a href="#">평균순</a></div>
             </div>
           </li>
-
           <c:forEach var="s" items="${sList}">
-            <li>
-              # 학번: ${s.stuNum}, 이름: <a href="#">${s.stuName}</a>, 평균:
+            <li id="student">
+              # 학번: ${s.stuNum}, 이름:
+              <a href="/score/detail?stuNum=${s.stuNum}">${s.stuName}</a>, 평균:
               ${s.average}점, 학점: ${s.grade}
               <a class="del-btn" href="#">삭제</a>
             </li>
           </c:forEach>
+          <!-- <script>
+            const $ul = document.getElementById("student");
+
+            $ul.addEventListener(`click`, (e) => {
+              e.preventDefault();
+              // id 정보 읽어오기
+              const userid = e.target.closest(`li`).dataset.id;
+              // window.location.href = `/chap04/remove?id=` + id;
+            });
+          </script> -->
         </ul>
       </section>
     </div>

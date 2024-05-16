@@ -58,9 +58,18 @@ public class ScoreController {
         return "";
     }
     @GetMapping("/detail")
-    public String detail() {
+    public String detail(long stuNum, Model model) {
+        ScoreJdbcRepository repository = new ScoreJdbcRepository();
         System.out.println("/score/retail : GET!");
-        return "";
+//        System.out.println("stuNum = " + stuNum);
+
+        //1. 상세 조회를 원하는 학번을 읽기
+        //2. db에 상세조회 요청하기
+        Score scoreL = repository.findOne(stuNum);
+        model.addAttribute("s", scoreL);
+        System.out.println("scoreL = " + scoreL);
+        //3. db에서 조회한 회원정보 jsp 에게 전달
+        return "score/score-detail";
     }
 
 
