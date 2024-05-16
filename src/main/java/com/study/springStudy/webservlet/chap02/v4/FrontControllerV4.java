@@ -1,12 +1,12 @@
-package com.study.springStudy.webservlet.chap02.v3;
+package com.study.springStudy.webservlet.chap02.v4;
 
 import com.study.springStudy.webservlet.Model;
 import com.study.springStudy.webservlet.ModelAndView;
-import com.study.springStudy.webservlet.View;
-import com.study.springStudy.webservlet.chap02.v3.controller.JoinController;
-import com.study.springStudy.webservlet.chap02.v3.controller.SaveController;
 import com.study.springStudy.webservlet.chap02.v3.controller.ControllerV3;
-import com.study.springStudy.webservlet.chap02.v3.controller.ShowController;
+import com.study.springStudy.webservlet.chap02.v4.controller.JoinController;
+import com.study.springStudy.webservlet.chap02.v4.controller.SaveController;
+import com.study.springStudy.webservlet.chap02.v4.controller.ShowController;
+import com.study.springStudy.webservlet.chap02.v4.controller.ControllerV4;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,14 +18,14 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/chap02/v3/*")
-public class FrontControllerV3 extends HttpServlet {
-    private Map<String, ControllerV3> controllerMap = new HashMap<>();
+@WebServlet("/chap02/v4/*")
+public class FrontControllerV4 extends HttpServlet {
+    private Map<String, ControllerV4> controllerMap = new HashMap<>();
 
-    public FrontControllerV3() {
-        controllerMap.put("/chap02/v3/join", new JoinController());
-        controllerMap.put("/chap02/v3/save", new SaveController());
-        controllerMap.put("/chap02/v3/show", new ShowController());
+    public FrontControllerV4() {
+        controllerMap.put("/chap02/v4/join", new JoinController());
+        controllerMap.put("/chap02/v4/save", new SaveController());
+        controllerMap.put("/chap02/v4/show", new ShowController());
     }
 
     @Override
@@ -33,11 +33,15 @@ public class FrontControllerV3 extends HttpServlet {
         String uri = req.getRequestURI();
 
         //요청에 맞는 적당한 컨트롤러 객체를 맵에서 꺼내기
-        ControllerV3 controller = controllerMap.get(uri);
+        ControllerV4 controller = controllerMap.get(uri);
         // 요청 파라ㅏ미터를 전부 읽어서 맵에 담아 리턴하는 메서드 호출
         // 요청 파라미터 : 클라이언트가 서버로 전달한 데이터
         Map<String, String> parameterMap = createParamMap(req);
-        ModelAndView mv = controller.process(parameterMap);
+        Model model = new Model();
+        String viewName = controller.process(parameterMap, model);
+
+        ModelAndView mv = new ModelAndView(viewName);
+        mv.setModel(model);
         // model 데이터 jsp로 보내기
         modelToView(req, mv);
         // view 렌더링
