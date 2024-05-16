@@ -20,9 +20,11 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
       <c:forEach var="m" items="${memberList}">
         <li>
           # 아이디: ${m.account},
-          <a href="#"> 이름: ${m.name} </a>
+          <a href="/chap02/v4/detail?account=${m.account}"> 이름: ${m.name} </a>
           &nbsp;&nbsp;&nbsp;
-          <a id="rm-btn" href="#">[delete]</a>
+          <a id="rm-btn" href="/chap02/v4/delete?account=${m.account}"
+            >[delete]</a
+          >
         </li>
       </c:forEach>
     </ul>

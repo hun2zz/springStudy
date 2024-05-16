@@ -11,11 +11,11 @@ public class SaveController implements ControllerV4{
     MemberMemoryRepo repo = MemberMemoryRepo.getInstance();
     @Override
     public String process(Map<String, String> paramMap, Model model) {
-        String name = paramMap.get("userName");
         String account = paramMap.get("account");
         String password = paramMap.get("password");
+        String name = paramMap.get("userName");
         //2. 회원 정보를 객체로 포장하여 적절한 저장소에 저장
-        Member member = new Member(name, account, password);
+        Member member = new Member(account, password, name);
         System.out.println("member = " + member);
 
         repo.save(member);

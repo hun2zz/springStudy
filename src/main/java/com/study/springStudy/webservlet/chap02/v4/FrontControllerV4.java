@@ -3,10 +3,7 @@ package com.study.springStudy.webservlet.chap02.v4;
 import com.study.springStudy.webservlet.Model;
 import com.study.springStudy.webservlet.ModelAndView;
 import com.study.springStudy.webservlet.chap02.v3.controller.ControllerV3;
-import com.study.springStudy.webservlet.chap02.v4.controller.JoinController;
-import com.study.springStudy.webservlet.chap02.v4.controller.SaveController;
-import com.study.springStudy.webservlet.chap02.v4.controller.ShowController;
-import com.study.springStudy.webservlet.chap02.v4.controller.ControllerV4;
+import com.study.springStudy.webservlet.chap02.v4.controller.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,6 +23,8 @@ public class FrontControllerV4 extends HttpServlet {
         controllerMap.put("/chap02/v4/join", new JoinController());
         controllerMap.put("/chap02/v4/save", new SaveController());
         controllerMap.put("/chap02/v4/show", new ShowController());
+        controllerMap.put("/chap02/v4/delete", new DeleteController());
+        controllerMap.put("/chap02/v4/detail", new DetailController());
     }
 
     @Override
