@@ -4,12 +4,17 @@ package com.study.springStudy.springmvc.chap03.controller;
 import com.study.springStudy.springmvc.chap03.dto.ScorePostDto;
 import com.study.springStudy.springmvc.chap03.entity.Score;
 import com.study.springStudy.springmvc.chap03.repository.ScoreJdbcRepository;
+import com.study.springStudy.springmvc.chap03.repository.ScoreRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -28,18 +33,25 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/score")
+@RequiredArgsConstructor
 public class ScoreController {
 
     // 데이터베이스 처리를 해주는 의존객체 설정하기.
-    private ScoreJdbcRepository repository = new ScoreJdbcRepository();
+    private final ScoreRepository repository;
+//    @Autowired // -- 롬복에서 파이널 생성자를 만들어주기 때문에 이 코드를 작성하지 않아도 괜찬흥ㅁ.
+//    public ScoreController(ScoreRepository repository) {
+//        this.repository = repository;
+//    }
 
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(@RequestParam(defaultValue = "num") String sort, Model model) {
         System.out.println("/score/list : GET!");
-        List<Score> scoreL = repository.findAll();
+        List<Score> scoreL = repository.findAll(sort);
+
         model.addAttribute("sList", scoreL);
         return "score/score-list";
     }
+
     @PostMapping("/register")
     public String register(ScorePostDto dto) {
         System.out.println("/score/register : POST!");
@@ -53,9 +65,8 @@ public class ScoreController {
         return "redirect:/score/list";
     }
     @GetMapping("/remove")
-    public String remove(long stuNum, Model model) {
-        ScoreJdbcRepository repository = new ScoreJdbcRepository();
-        repository.removeOne(stuNum);
+    public String remove(long sn) {
+        repository.delete(sn);
         return "redirect:/score/list";
     }
 

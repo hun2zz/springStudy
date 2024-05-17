@@ -11,6 +11,7 @@ public class HotelManager {
     public Chef chef2() {
         return new KimuraChef();
     }
+
     //요리 코스 객체 생성
     public Course course1() {
         return new FrenchCourse();

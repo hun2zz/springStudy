@@ -1,11 +1,13 @@
 package com.study.springStudy.springmvc.chap03.repository;
 
 import com.study.springStudy.springmvc.chap03.entity.Score;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ScoreJdbcRepository implements ScoreRepository{
     private String url = "jdbc:mariadb://localhost:3306/spring5";
     private String username = "root";
@@ -43,10 +45,11 @@ public class ScoreJdbcRepository implements ScoreRepository{
     }
 
     @Override
-    public List<Score> findAll() {
+    public List<Score> findAll(String sort) {
         List<Score> scoreList = new ArrayList<>();
         try (Connection conn = connect()) {
-            String sql = "SELECT * FROM tbl_score";
+            String sql = "SELECT * FROM tbl_score " +sortCondition(sort);
+            System.out.println("sql = " + sql);
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -57,6 +60,22 @@ public class ScoreJdbcRepository implements ScoreRepository{
             e.printStackTrace();
         }
         return scoreList;
+    }
+
+    private String sortCondition(String sort) {
+        String sortSql = "ORDER BY ";
+        switch (sort) {
+            case "num" :
+                sortSql += "stu_num";
+                break;
+            case"name":
+                sortSql += "stu_name";
+                break;
+            case"avg":
+                sortSql += "average DESC";
+                break;
+        }
+        return sortSql;
     }
 
     @Override
@@ -79,16 +98,31 @@ public class ScoreJdbcRepository implements ScoreRepository{
     }
 
     @Override
-    public void removeOne(long stuNum) {
-        try(Connection conn = connect()) {
+    public boolean delete(long sn) {
+        try (Connection conn = connect()){
             String sql = "DELETE FROM tbl_score WHERE stu_num = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setLong(1, stuNum);
-            preparedStatement.executeUpdate();
-        }catch (Exception e) {
+            preparedStatement.setLong(1, sn);
+            int i = preparedStatement.executeUpdate();
+
+            if(i == 1) return true;
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
+
+//    @Override
+//    public void removeOne(long stuNum) {
+//        try(Connection conn = connect()) {
+//            String sql = "DELETE FROM tbl_score WHERE stu_num = ?";
+//            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+//            preparedStatement.setLong(1, stuNum);
+//            preparedStatement.executeUpdate();
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     private Connection connect() throws SQLException {

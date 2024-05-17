@@ -17,7 +17,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <ul>
       <h1>MVC버전 목록보기</h1>
 
-      <c:forEach var="m" items="${memberList}">
+      <c:forEach var="m" items="${memberlist}">
         <li>
           # 아이디: ${m.account},
           <a href="#"> 이름: ${m.name} </a>

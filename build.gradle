@@ -30,6 +30,9 @@ dependencies {
 
 //   마리아 DB
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.3'
+
+    //spring jdbc 모듈
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 }
 
 tasks.named('test') {
