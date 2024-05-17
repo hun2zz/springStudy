@@ -33,6 +33,8 @@ dependencies {
 
     //spring jdbc 모듈
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+
 }
 
 tasks.named('test') {
