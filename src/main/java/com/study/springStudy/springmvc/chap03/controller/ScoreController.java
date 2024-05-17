@@ -76,7 +76,6 @@ public class ScoreController {
         ScoreJdbcRepository repository = new ScoreJdbcRepository();
         System.out.println("/score/retail : GET!");
 //        System.out.println("stuNum = " + stuNum);
-
         //1. 상세 조회를 원하는 학번을 읽기
         //2. db에 상세조회 요청하기
         Score scoreL = repository.findOne(stuNum);

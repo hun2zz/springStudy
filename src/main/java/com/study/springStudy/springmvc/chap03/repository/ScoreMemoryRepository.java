@@ -20,4 +20,9 @@ public class ScoreMemoryRepository implements ScoreRepository{
         return null;
     }
 
+    @Override
+    public int[] findRankByStuNum(long stuNum) {
+        return new int[0];
+    }
+
 }

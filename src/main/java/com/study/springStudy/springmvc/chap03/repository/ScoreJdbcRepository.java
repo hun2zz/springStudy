@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
 public class ScoreJdbcRepository implements ScoreRepository{
     private String url = "jdbc:mariadb://localhost:3306/spring5";
     private String username = "root";
@@ -95,6 +95,11 @@ public class ScoreJdbcRepository implements ScoreRepository{
             e.printStackTrace();
         }
         return scoreList.get(0);
+    }
+
+    @Override
+    public int[] findRankByStuNum(long stuNum) {
+        return new int[0];
     }
 
     @Override

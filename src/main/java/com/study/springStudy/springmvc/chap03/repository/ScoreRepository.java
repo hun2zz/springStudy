@@ -15,6 +15,7 @@ public interface ScoreRepository {
     List<Score> findAll(String sort);
     //저장소에서 데이터 개별조회하기
     Score findOne(long stuNum);
+    int[] findRankByStuNum(long stuNum);
 
     default boolean delete(long sn) {
         return false;
