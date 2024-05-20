@@ -38,20 +38,20 @@
             <div class="card-wrapper">
                 <section class="card" data-bno="${s.boardNo}">
                     <div class="card-title-wrapper">
-                        <h2 class="card-title">${s.title}</h2>
+                        <h2 class="card-title">${s.shortTitle}</h2>
                         <div class="time-view-wrapper">
                             <div class="time">
                                 <i class="far fa-clock"></i>
-                                    ${s.regDateTime}
+                                    ${s.date}
                             </div>
                             <div class="view">
                                 <i class="fas fa-eye"></i>
-                                <span class="view-count">${s.viewCount}</span>
+                                <span class="view-count">${s.view}</span>
                             </div>
                         </div>
                     </div>
                     <div class="card-content">
-                            ${s.content}
+                            ${s.shortContent}
                     </div>
                 </section>
                 <div class="card-btn-group">

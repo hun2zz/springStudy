@@ -1,6 +1,7 @@
 package com.study.springStudy.springmvc.chap04.controller;
 
 import com.study.springStudy.springmvc.chap04.dto.BoardDto;
+import com.study.springStudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import com.study.springStudy.springmvc.chap04.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/board")
@@ -22,7 +25,15 @@ public class BoardController {
     //1. 목록 조회 요청 url : /board/list : (GET)
     public String list (String board, Model model) {
         List<Board> scoreL = boardRepository.findAll(board);
-        model.addAttribute("sList", scoreL);
+        //클라이언트에 데이터를 보내기전에 렌더링에 필요한 데이터만 추출하기
+//        List<BoardListResponseDto> bList = new ArrayList<>();
+//        for (Board board1 : scoreL) {
+//            BoardListResponseDto boardListResponseDto = new BoardListResponseDto(board1);
+//            bList.add(boardListResponseDto);
+//        }
+        List<BoardListResponseDto> collect = scoreL.stream().map(b -> new BoardListResponseDto(b)).collect(Collectors.toList());
+
+        model.addAttribute("sList", collect);
         return "board/list";
     }
 
