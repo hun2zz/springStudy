@@ -68,4 +68,6 @@ public class ScoreSpringJdbcRepository implements ScoreRepository{
                 rs.getInt("cnt")
         }, stuNum);
     }
+
+
 }
