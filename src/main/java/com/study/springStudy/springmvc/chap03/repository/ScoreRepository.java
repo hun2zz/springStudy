@@ -20,6 +20,9 @@ public interface ScoreRepository {
     default boolean delete(long sn) {
         return false;
     }
-    //저장소에서 데이터 삭제하기
+    //저장소에서 국영수 점수 수정하기
+    default boolean updateScore(Score s) {
+        return false;
+    };
 
 }

@@ -69,5 +69,10 @@ public class ScoreSpringJdbcRepository implements ScoreRepository{
         }, stuNum);
     }
 
+    @Override
+    public boolean updateScore(Score s) {// 자동으로 통합점수, 평균, grade가 바뀌는 게 아니기 때문에 수정해줘야함.
+        String sql = "UPDATE tbl_score SET kor = ?, eng = ?, math = ?, total = ?, average = ?, grade = ? WHERE stu_num = ?";
 
+        return template.update(sql, s.getKor(), s.getEng(), s.getMath(), s.getTotal(), s.getAverage(), s.getGrade().toString(), s.getStuNum()) == 1;
+    }
 }

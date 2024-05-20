@@ -2,6 +2,7 @@ package com.study.springStudy.springmvc.chap03.service;
 
 import com.study.springStudy.springmvc.chap03.dto.ScoreDetailResponseDto;
 import com.study.springStudy.springmvc.chap03.dto.ScoreListResponseDto;
+import com.study.springStudy.springmvc.chap03.dto.ScoreModifyRequestDto;
 import com.study.springStudy.springmvc.chap03.dto.ScorePostDto;
 import com.study.springStudy.springmvc.chap03.entity.Score;
 import com.study.springStudy.springmvc.chap03.repository.ScoreRepository;
@@ -56,4 +57,13 @@ public class ScoreService {
         return scoreDetailResponseDto;
 
     }
+
+
+    //수정 완료를 위해서 서비스 클래스에서
+    // dto를 entity로 변환하는 작업.
+    public void update(ScoreModifyRequestDto dto) {
+       repository.updateScore(new Score(dto));
+    }
+
+    // 개별 수정 처리
 }
