@@ -21,6 +21,11 @@
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/list.css">
 
+    <style>
+        .card-container .card .card-title-wrapper .time-view-wrapper>div.hit {
+            background: yellow;
+        }
+    </style>
 </head>
 
 <body>
@@ -44,6 +49,13 @@
                                 <i class="far fa-clock"></i>
                                     ${s.date}
                             </div>
+                            <c:if test="${s.hit}">
+                            <div class="hit">HIT</div>
+                            </c:if>
+
+                            <c:if test="${s.newArticle}">
+                                <div class="hit">new</div>
+                            </c:if>
                             <div class="view">
                                 <i class="fas fa-eye"></i>
                                 <span class="view-count">${s.view}</span>

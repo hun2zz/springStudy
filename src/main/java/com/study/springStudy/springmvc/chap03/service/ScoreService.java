@@ -1,10 +1,8 @@
 package com.study.springStudy.springmvc.chap03.service;
 
-import com.study.springStudy.springmvc.chap03.dto.ScoreDetailResponseDto;
-import com.study.springStudy.springmvc.chap03.dto.ScoreListResponseDto;
-import com.study.springStudy.springmvc.chap03.dto.ScoreModifyRequestDto;
-import com.study.springStudy.springmvc.chap03.dto.ScorePostDto;
+import com.study.springStudy.springmvc.chap03.dto.*;
 import com.study.springStudy.springmvc.chap03.entity.Score;
+import com.study.springStudy.springmvc.chap03.mapper.ScoreMapper;
 import com.study.springStudy.springmvc.chap03.repository.ScoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class ScoreService {
 
-    private final ScoreRepository repository;
+    private final ScoreMapper repository;
 
     //목록 조회 중간처리
     // - DB에서 조회한 성적 정보 목록은 민감한 정보를 모두 포함하고 있는데,
@@ -50,10 +48,10 @@ public class ScoreService {
     public ScoreDetailResponseDto retrieve(long stuNum) {
         Score scoreL = repository.findOne(stuNum);
 //        model.addAttribute("s", scoreL);
-        int[] result= repository.findRankByStuNum(stuNum);
+        RankDto result= repository.findRankByStuNum(stuNum);
 
 
-        ScoreDetailResponseDto scoreDetailResponseDto = new ScoreDetailResponseDto(scoreL, result[0], result[1]);
+        ScoreDetailResponseDto scoreDetailResponseDto = new ScoreDetailResponseDto(scoreL, result.getRank(), result.getCnt());
         return scoreDetailResponseDto;
 
     }

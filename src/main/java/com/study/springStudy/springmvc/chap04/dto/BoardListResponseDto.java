@@ -15,6 +15,8 @@ public class BoardListResponseDto {
     private String date; // 포맷팅된 날짜 문자열
     private int view;
     private int boardNo;
+    private boolean hit;// hit 게시물인가 ?
+    private boolean newArticle;
 
 
     //엔터티를 DTO로 변환하는 생성자
@@ -24,6 +26,8 @@ public class BoardListResponseDto {
         this.date =  dateForMatting(b.getRegDateTime());
         this.view = b.getViewCount();
         this.boardNo = b.getBoardNo();
+        this.hit = this.view > 5;
+        this.newArticle = LocalDateTime.now().isBefore(b.getRegDateTime());
     }
 
     private String dateForMatting(LocalDateTime regDateTime) {

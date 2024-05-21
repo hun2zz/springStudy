@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper 파일은 실행할 SQL을 적는 파일-->
+<!--생성한 mapper 파일은 mybatis-config.xml에 사용등록을 해야함.-->
+
+
+<!--namespace 속성에는 사용할 인터페이스의 풀네임을 작성, (패키지 + 인터페이스명을 작성)-->
+<mapper namespace="com.study.springStudy.springmvc.chap03.mapper.ScoreMapper">
+
+    <!--    id 속성에 인터페이스의 추상메서드명을 적는다.-->
+    <insert id ="save">
+        INSERT INTO tbl_score
+        (stu_name, kor, eng, math, total, average, grade) VALUES (#{stuName}, #{kor}, #{eng}, #{math}, #{total}, #{average}, #{grade})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM tbl_score
+        WHERE stu_num = #{sn}
+    </delete>
+
+
+    <update id="updateScore">
+        UPDATE tbl_score
+        SET kor = #{kor}, eng = #{eng}, math = #{math},
+        total = #{total}, average =#{average}, grade = #{grade}
+        WHERE stu_num = #{stuNum}
+    </update>
+
+    <select id="findAll" resultType="score">
+        SELECT * FROM tbl_score
+    </select>
+
+
+    <!--    만약 findOne 메서드에 파라미터가 있다면 파라미터의 값을 적어주는 것.-->
+    <select id="findOne" resultType="score">
+        SELECT * FROM tbl_score
+        WHERE stu_num = #{stuNum}
+    </select>
+
+    <select id="findRankByStuNum" resultType="com.study.springStudy.springmvc.chap03.dto.RankDto">
+        SELECT A.rank, A.cnt
+        FROM (SELECT *,
+        RANK() OVER (ORDER BY average DESC) AS "rank",
+        COUNT(*) OVER() AS cnt
+        FROM tbl_score) A
+        WHERE A.stu_num = #{stuNum}
+    </select>
+
+</mapper>

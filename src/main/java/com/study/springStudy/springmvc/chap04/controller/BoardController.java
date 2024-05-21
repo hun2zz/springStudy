@@ -3,7 +3,7 @@ package com.study.springStudy.springmvc.chap04.controller;
 import com.study.springStudy.springmvc.chap04.dto.BoardDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
-import com.study.springStudy.springmvc.chap04.repository.BoardRepository;
+import com.study.springStudy.springmvc.chap04.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,21 +19,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
-    private final BoardRepository boardRepository;
+    private final BoardService service;
 
     @GetMapping("/list")
     //1. 목록 조회 요청 url : /board/list : (GET)
     public String list (String board, Model model) {
-        List<Board> scoreL = boardRepository.findAll(board);
+        List<BoardListResponseDto> scoreL = service.getList(board);
         //클라이언트에 데이터를 보내기전에 렌더링에 필요한 데이터만 추출하기
-//        List<BoardListResponseDto> bList = new ArrayList<>();
-//        for (Board board1 : scoreL) {
-//            BoardListResponseDto boardListResponseDto = new BoardListResponseDto(board1);
-//            bList.add(boardListResponseDto);
-//        }
-        List<BoardListResponseDto> collect = scoreL.stream().map(b -> new BoardListResponseDto(b)).collect(Collectors.toList());
-
-        model.addAttribute("sList", collect);
+        model.addAttribute("sList", scoreL);
         return "board/list";
     }
 
@@ -50,7 +43,7 @@ public class BoardController {
     public String write1(BoardDto dto) {
 
         Board board = new Board(dto);
-        boardRepository.save(board);
+        service.save(board);
         return "redirect:/board/list";
     }
 
@@ -59,7 +52,7 @@ public class BoardController {
     //-> 삭제 완료하고 조회요청 리다이렉션.
     @GetMapping("delete")
     public String delete(int num) {
-        boardRepository.delete(num);
+        service.delete(num);
         return "redirect:/board/list";
     }
 
@@ -67,8 +60,12 @@ public class BoardController {
     //5. 게시글 상세 조회 요청 url : /board/detail (GET)
     @GetMapping("detail")
     public String detail(int num, Model model){
-        Board one = boardRepository.findOne(num);
-        boardRepository.updateLook(one, num);
+        Board one = service.findOne(num);
+
+        service.updateLook(one);
+
+
+
         model.addAttribute("num", one);
 
         return "board/detail";

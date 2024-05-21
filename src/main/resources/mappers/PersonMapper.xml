@@ -17,4 +17,36 @@
         VALUES
             (#{id}, #{personName}, #{personAge})
     </insert>
+
+    <delete id="delete">
+        DELETE FROM tbl_person
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE tbl_person
+        SET person_age = #{personAge}, person_name = #{personName}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findAll" resultType="person">
+        SELECT * FROM tbl_person
+    </select>
+
+
+<!--    만약 findOne 메서드에 파라미터가 있다면 파라미터의 값을 적어주는 것.-->
+    <select id="findOne" resultType="person">
+        SELECT * FROM tbl_person
+        WHERE id = #{id}
+    </select>
+
+    <select id="findNames" resultType="String">
+        SELECT person_name
+        FROM tbl_person
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*)
+        FROM tbl_person
+    </select>
 </mapper>

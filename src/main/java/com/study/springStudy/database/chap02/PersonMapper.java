@@ -22,4 +22,11 @@ public interface PersonMapper {
 
     //사람 삭제
     boolean delete (long id);
+
+    //사람의 이름만 조회 \
+    List<String> findNames();
+
+    //사람들의 총 숫자만 조회
+    int count();
+
 }
