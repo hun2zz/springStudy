@@ -1,6 +1,7 @@
 package com.study.springStudy.springmvc.chap04.controller;
 
 import com.study.springStudy.springmvc.chap04.comon.Page;
+import com.study.springStudy.springmvc.chap04.comon.PageMaker;
 import com.study.springStudy.springmvc.chap04.dto.BoardDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
@@ -27,9 +28,11 @@ public class BoardController {
     public String list (Model model, Page page) {
         List<BoardListResponseDto> scoreL = service.getList(page);
         // 페이지 정보를 생성하여 JSP에게 전송
+        PageMaker pageMaker = new PageMaker(page, service.getCount());
 
         //클라이언트에 데이터를 보내기전에 렌더링에 필요한 데이터만 추출하기
         model.addAttribute("sList", scoreL);
+        model.addAttribute("maker", pageMaker);
         return "board/list";
     }
 

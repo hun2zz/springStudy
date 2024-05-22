@@ -86,15 +86,21 @@
         <!-- 페이지 버튼 영역 -->
         <nav aria-label="Page navigation example">
             <ul class="pagination pagination-lg pagination-custom">
-                <li data-page-num="1" class="page-item">
-                    <a class="page-link" href="/board/list?pageNo=1">1</a>
+                <c:if test="${maker.prev}">
+                <li class="page-item">
+                    <a class="page-link" href="/board/list?pageNo=${maker.begin-1}">prev</a>
                 </li>
-                <li data-page-num="2" class="page-item">
-                    <a class="page-link" href="/board/list?pageNo=2">2</a>
+                </c:if>
+                <c:forEach var="i" begin="${maker.begin}" end="${maker.end}">
+                <li data-page-num="${i}" class="page-item">
+                    <a class="page-link" href="/board/list?pageNo=${i}">${i}</a>
                 </li>
-                <li data-page-num="3" class="page-item">
-                    <a class="page-link" href="/board/list?pageNo=3">3</a>
+                </c:forEach>
+                <c:if test="${maker.next}">
+                <li class="page-item">
+                    <a class="page-link" href="/board/list?pageNo=${maker.end+1}">next</a>
                 </li>
+                </c:if>
             </ul>
         </nav>
 

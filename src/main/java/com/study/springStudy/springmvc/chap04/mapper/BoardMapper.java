@@ -24,4 +24,8 @@ public interface BoardMapper {
 
 
     void updateLook(Board board);
+
+
+    //총 게시물 수 조회
+    int getCount();
 }
