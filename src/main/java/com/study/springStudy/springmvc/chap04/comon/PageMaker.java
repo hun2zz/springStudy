@@ -15,12 +15,14 @@ public class PageMaker {
 
 
     //페이지 시작번호와 끝번호
-    private  int begin, end;
+    private  int begin, end, finalPage;
 
     //현재 페이지 정보
     private Page pageInfo;
     //총 게시물 수
     private int totalCount;
+
+//    private boolean click;
 
     // 이전 , 다음버튼 활성화 여부
     private boolean prev, next;
@@ -82,7 +84,7 @@ public class PageMaker {
 
          */
 
-        int finalPage = (int)Math.ceil((double)totalCount/ pageInfo.getAmount());
+        this.finalPage = (int)Math.ceil((double)totalCount/ pageInfo.getAmount());
 
         //마지막 구간에서 end 값을 finalPage 값으로 보정함.
         if(finalPage < this.end) {
@@ -94,6 +96,8 @@ public class PageMaker {
 
         // 5. 다음 버튼 활성화 여부
         this.next = begin < finalPage;
+
+
     }
 
 }
