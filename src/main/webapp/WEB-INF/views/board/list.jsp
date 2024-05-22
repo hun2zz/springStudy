@@ -18,11 +18,14 @@
     <!-- fontawesome css: https://fontawesome.com -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
 
+    <!-- bootstrap css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/list.css">
 
     <style>
-        .card-container .card .card-title-wrapper .time-view-wrapper>div.hit {
+        .card-container .card .card-title-wrapper .time-view-wrapper > div.hit {
             background: yellow;
         }
     </style>
@@ -31,7 +34,6 @@
 <body>
 
 <div id="wrap">
-
     <div class="main-title-wrapper">
         <h1 class="main-title">꾸러기 게시판</h1>
         <button class="add-btn">새 글 쓰기</button>
@@ -50,7 +52,7 @@
                                     ${s.date}
                             </div>
                             <c:if test="${s.hit}">
-                            <div class="hit">HIT</div>
+                                <div class="hit">HIT</div>
                             </c:if>
 
                             <c:if test="${s.newArticle}">
@@ -76,8 +78,30 @@
 
 
     </div>
+    <%--end.card-container --%>
 
+    <!-- 게시글 목록 하단 영역 -->
+    <div class="bottom-section">
+
+        <!-- 페이지 버튼 영역 -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-lg pagination-custom">
+                <li data-page-num="1" class="page-item">
+                    <a class="page-link" href="/board/list?pageNo=1">1</a>
+                </li>
+                <li data-page-num="2" class="page-item">
+                    <a class="page-link" href="/board/list?pageNo=2">2</a>
+                </li>
+                <li data-page-num="3" class="page-item">
+                    <a class="page-link" href="/board/list?pageNo=3">3</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+    <!— end div.bottom-section —>
 </div>
+<%--end div#wrap--%>
 
 <!-- 모달 창 -->
 <div class="modal" id="modal">

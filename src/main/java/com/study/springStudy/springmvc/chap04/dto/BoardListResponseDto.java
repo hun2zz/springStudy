@@ -26,12 +26,14 @@ public class BoardListResponseDto {
         this.date =  dateForMatting(b.getRegDateTime());
         this.view = b.getViewCount();
         this.boardNo = b.getBoardNo();
-        this.hit = this.view > 5;
-        this.newArticle = LocalDateTime.now().isBefore(b.getRegDateTime());
+        // 게시물 등록시간
+        LocalDateTime regTime = b.getRegDateTime();
+        this.hit = b.getViewCount() > 5;
+        this.newArticle = LocalDateTime.now().isBefore(regTime.plusMinutes(5));
     }
 
-    private String dateForMatting(LocalDateTime regDateTime) {
-        return DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm").format(regDateTime);
+    private String dateForMatting(LocalDateTime reg) {
+        return DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm").format(reg);
     }
 
     private String makeShortContent(String content) {
