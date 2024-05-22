@@ -2,6 +2,7 @@ package com.study.springStudy.springmvc.chap04.controller;
 
 import com.study.springStudy.springmvc.chap04.comon.Page;
 import com.study.springStudy.springmvc.chap04.comon.PageMaker;
+import com.study.springStudy.springmvc.chap04.comon.Search;
 import com.study.springStudy.springmvc.chap04.dto.BoardDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
@@ -25,7 +26,7 @@ public class BoardController {
 
     @GetMapping("/list")
     //1. 목록 조회 요청 url : /board/list : (GET)
-    public String list (Model model, Page page) {
+    public String list (Model model, Search page) {
         List<BoardListResponseDto> scoreL = service.getList(page);
         // 페이지 정보를 생성하여 JSP에게 전송
         PageMaker pageMaker = new PageMaker(page, service.getCount());
