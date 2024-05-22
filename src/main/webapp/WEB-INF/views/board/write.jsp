@@ -96,7 +96,7 @@
   <h1>꾸러기 게시판 글쓰기</h1>
 
   <form action="#" method="post">
-    <label for="title">작성자\\\</label>
+    <label for="title">작성자</label>
     <input type="text" id="writer" name="writer" required>
     <label for="title">제목</label>
     <input type="text" id="title" name="title" required>
