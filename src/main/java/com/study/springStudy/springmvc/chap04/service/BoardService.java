@@ -43,7 +43,7 @@ public class BoardService {
         mapper.delete(num);
     }
 
-    public int getCount() {
-        return mapper.getCount();
+    public int getCount(Search page) {
+        return mapper.getCount(page);
     }
 }

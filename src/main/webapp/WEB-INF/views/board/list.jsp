@@ -14,31 +14,32 @@
     <!-- reset -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
 
-
     <!-- fontawesome css: https://fontawesome.com -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
 
     <!-- bootstrap css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/list.css">
 
     <style>
-        .card-container .card .card-title-wrapper .time-view-wrapper > div.hit {
+        .card-container .card .card-title-wrapper .time-view-wrapper>div.hit {
             background: yellow;
         }
     </style>
+
 </head>
 
 <body>
 
 <div id="wrap">
+
     <div class="main-title-wrapper">
         <h1 class="main-title">꾸러기 게시판</h1>
         <button class="add-btn">새 글 쓰기</button>
     </div>
-
 
 
     <div class="top-section">
@@ -53,7 +54,7 @@
                     <option value="tc">제목+내용</option>
                 </select>
 
-                <input type="text" class="form-control" name="keyword" >
+                <input type="text" class="form-control" name="keyword">
 
                 <button class="btn btn-primary" type="submit">
                     <i class="fas fa-search"></i>
@@ -61,48 +62,58 @@
 
             </form>
         </div>
+
+        <div class="amount">
+            <div><a href="#">6</a></div>
+            <div><a href="#">18</a></div>
+            <div><a href="#">30</a></div>
+        </div>
+
     </div>
 
     <div class="card-container">
 
-        <c:forEach var="s" items="${sList}">
+        <c:forEach var="b" items="${sList}">
             <div class="card-wrapper">
-                <section class="card" data-bno="${s.boardNo}">
+                <section class="card" data-bno="${b.boardNo}">
                     <div class="card-title-wrapper">
-                        <h2 class="card-title">${s.shortTitle}</h2>
+                        <h2 class="card-title">${b.shortTitle}</h2>
                         <div class="time-view-wrapper">
                             <div class="time">
                                 <i class="far fa-clock"></i>
-                                    ${s.date}
+                                    ${b.date}
                             </div>
-                            <c:if test="${s.hit}">
+
+                            <c:if test="${b.hit}">
                                 <div class="hit">HIT</div>
                             </c:if>
 
-                            <c:if test="${s.newArticle}">
-                                <div class="hit">new</div>
+                            <c:if test="${b.newArticle}">
+                                <div class="hit">NEW</div>
                             </c:if>
+
                             <div class="view">
                                 <i class="fas fa-eye"></i>
-                                <span class="view-count">${s.view}</span>
+                                <span class="view-count">${b.view}</span>
                             </div>
                         </div>
                     </div>
                     <div class="card-content">
-                            ${s.shortContent}
+                            ${b.shortContent}
                     </div>
                 </section>
                 <div class="card-btn-group">
-                    <button class="del-btn" data-href="/board/delete?num=${s.boardNo}">
+                    <button class="del-btn" data-href="/board/delete?bno=${b.boardNo}">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
             </div>
+            <!-- end div.card-wrapper -->
         </c:forEach>
 
 
     </div>
-    <%--end.card-container --%>
+    <!-- end div.card-container -->
 
     <!-- 게시글 목록 하단 영역 -->
     <div class="bottom-section">
@@ -110,38 +121,46 @@
         <!-- 페이지 버튼 영역 -->
         <nav aria-label="Page navigation example">
             <ul class="pagination pagination-lg pagination-custom">
-                <c:if test="${maker.pageInfo.pageNo != 1}" >
-                <li class="page-item">
-                    <a class="page-link" href="/board/list?pageNo=1"><<</a>
-                </li>
+
+                <c:if test="${maker.pageInfo.pageNo != 1}">
+                    <li class="page-item">
+                        <a class="page-link" href="/board/list?pageNo=1&type=${s.type}&keyword=${s.keyword}"> &lt;&lt;</a>
+                    </li>
                 </c:if>
+
                 <c:if test="${maker.prev}">
-                <li class="page-item">
-                    <a class="page-link" href="/board/list?pageNo=${maker.begin-1}">prev</a>
-                </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/board/list?pageNo=${maker.begin - 1}&type=${s.type}&keyword=${s.keyword}">prev</a>
+                    </li>
                 </c:if>
+
                 <c:forEach var="i" begin="${maker.begin}" end="${maker.end}">
-                <li data-page-num="${i}" class="page-item">
-                    <a class="page-link" href="/board/list?pageNo=${i}">${i}</a>
-                </li>
+                    <li data-page-num="${i}" class="page-item">
+                        <a class="page-link" href="/board/list?pageNo=${i}&type=${s.type}&keyword=${s.keyword}">${i}</a>
+                    </li>
                 </c:forEach>
+
                 <c:if test="${maker.next}">
-                <li class="page-item">
-                    <a class="page-link" href="/board/list?pageNo=${maker.end+1}">next</a>
-                </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/board/list?pageNo=${maker.end + 1}&type=${s.type}&keyword=${s.keyword}">next</a>
+                    </li>
                 </c:if>
+
                 <c:if test="${maker.pageInfo.pageNo != maker.finalPage}">
-                <li class="page-item">
-                    <a class="page-link" href="/board/list?pageNo=${maker.finalPage}">>></a>
-                </li>
+                    <li class="page-item">
+                        <a class="page-link" href="/board/list?pageNo=${maker.finalPage}&type=${s.type}&keyword=${s.keyword}">&gt;&gt;</a>
+                    </li>
                 </c:if>
+
             </ul>
         </nav>
 
     </div>
-    <!— end div.bottom-section —>
+    <!-- end div.bottom-section -->
+
 </div>
-<%--end div#wrap--%>
+<!-- end div.wrap -->
+
 
 <!-- 모달 창 -->
 <div class="modal" id="modal">
@@ -155,7 +174,9 @@
 </div>
 
 
+
 <script>
+
     const $cardContainer = document.querySelector('.card-container');
 
     //================= 삭제버튼 스크립트 =================//
@@ -166,10 +187,13 @@
     $cardContainer.addEventListener('click', e => {
         // 삭제 버튼을 눌렀다면~
         if (e.target.matches('.card-btn-group *')) {
+            console.log('삭제버튼 클릭');
             modal.style.display = 'flex'; // 모달 창 띄움
 
             const $delBtn = e.target.closest('.del-btn');
+            // 삭제 링크주소 얻기
             const deleteLocation = $delBtn.dataset.href;
+            console.log(deleteLocation);
 
             // 확인 버튼 이벤트
             confirmDelete.onclick = e => {
@@ -189,7 +213,7 @@
             // section태그에 붙은 글번호 읽기
             const bno = e.target.closest('section.card').dataset.bno;
             // 요청 보내기
-            window.location.href = '/board/detail?num=' + bno;
+            window.location.href = '/board/detail?bno=' + bno;
         }
     });
 
@@ -216,6 +240,7 @@
         const $delBtn = e.target.closest('.card-wrapper')?.querySelector('.del-btn');
         $delBtn.style.opacity = '0';
     }
+
 
 
     $cardContainer.onmouseover = e => {
@@ -247,7 +272,6 @@
         window.location.href = '/board/write';
     };
 
-
     function appendActivePage() {
 
         // 1. 현재 위치한 페이지 번호를 알아낸다.
@@ -265,6 +289,9 @@
     }
 
     appendActivePage();
+
+
+
 
 </script>
 

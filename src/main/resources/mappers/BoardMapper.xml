@@ -10,6 +10,22 @@
 <!--namespace 속성에는 사용할 인터페이스의 풀네임을 작성, (패키지 + 인터페이스명을 작성)-->
 <mapper namespace="com.study.springStudy.springmvc.chap04.mapper.BoardMapper">
 
+<!-- 동적 SQL 조건을 분리    -->
+    <sql id="search">
+    <if test="type == 'title' ">
+        WHERE title LIKE CONCAT('%',#{keyword},'%')
+    </if>
+    <if test="type == 'content' ">
+        WHERE content LIKE CONCAT('%',#{keyword},'%')
+    </if>
+    <if test="type == 'writer' ">
+        WHERE writer LIKE CONCAT('%',#{keyword},'%')
+    </if>
+    <if test="type == 'tc' ">
+        WHERE title LIKE CONCAT('%',#{keyword},'%')
+        OR content LIKE CONCAT('%',#{keyword},'%')
+    </if>
+    </sql>
     <!--    id 속성에 인터페이스의 추상메서드명을 적는다.-->
     <insert id ="save">
         INSERT INTO tbl_board
@@ -23,19 +39,7 @@
 
     <select id="findAll" resultType="board">
         SELECT * FROM tbl_board
-        <if test="type == 'title' ">
-            WHERE title LIKE CONCAT('%',#{keyword},'%')
-        </if>
-        <if test="type == 'content' ">
-            WHERE content LIKE CONCAT('%',#{keyword},'%')
-        </if>
-        <if test="type == 'writer' ">
-            WHERE writer LIKE CONCAT('%',#{keyword},'%')
-        </if>
-        <if test="type == 'tc' ">
-            WHERE title LIKE CONCAT('%',#{keyword},'%')
-                OR content LIKE CONCAT('%',#{keyword},'%')
-        </if>
+       <include refid="search"/>
         ORDER BY board_no DESC
         LIMIT #{pageStart}, #{amount}
     </select>
@@ -56,6 +60,7 @@
     <select id = "getCount" resultType="int">
         SELECT COUNT(*)
         FROM tbl_board
+        <include refid="search"/>
     </select>
 
 
