@@ -17,19 +17,21 @@ public class BoardListResponseDto {
     private int boardNo;
     private boolean hit;// hit 게시물인가 ?
     private boolean newArticle;
+    private int replyCount;
 
 
     //엔터티를 DTO로 변환하는 생성자
-    public BoardListResponseDto(Board b) {
+    public BoardListResponseDto(BoardFindAllDto b) {
         this.shortTitle = makeShortTitle(b.getTitle());
         this.shortContent = makeShortContent(b.getContent());
         this.date =  dateForMatting(b.getRegDateTime());
         this.view = b.getViewCount();
-        this.boardNo = b.getBoardNo();
+        this.boardNo = (int) b.getBoardNo();
         // 게시물 등록시간
         LocalDateTime regTime = b.getRegDateTime();
-        this.hit = b.getViewCount() > 5;
+        this.hit = this.view > 5;
         this.newArticle = LocalDateTime.now().isBefore(regTime.plusMinutes(5));
+        this.replyCount = b.getReplyCount();
     }
 
     private String dateForMatting(LocalDateTime reg) {

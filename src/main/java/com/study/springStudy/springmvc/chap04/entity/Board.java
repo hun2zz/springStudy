@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder // 테스트에서 너무 많은 값을 입력해야 하므로 빌더를 만들어줌.
 public class Board {
     private int boardNo;
     private String title;

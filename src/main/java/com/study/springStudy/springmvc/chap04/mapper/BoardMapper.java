@@ -1,18 +1,17 @@
 package com.study.springStudy.springmvc.chap04.mapper;
 
 
-import com.study.springStudy.springmvc.chap04.comon.Page;
 import com.study.springStudy.springmvc.chap04.comon.Search;
+import com.study.springStudy.springmvc.chap04.dto.BoardFindAllDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface BoardMapper {
 
-    List<Board> findAll(Search page); // o
+    List<BoardFindAllDto> findAll(Search page); // o
 
 
     Board findOne(int boardNum); // o
