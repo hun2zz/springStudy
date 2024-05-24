@@ -2,10 +2,13 @@ package com.study.springStudy.springmvc.chap04.dto;
 
 
 import com.study.springStudy.springmvc.chap04.entity.Board;
+import com.study.springStudy.springmvc.chap05.entity.Reply;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 //서버에서 조회한 데이터 중 화면에 필요한 데이터만 모아놓은 클래스
 @Getter
@@ -18,6 +21,9 @@ public class BoardListResponseDto {
     private boolean hit;// hit 게시물인가 ?
     private boolean newArticle;
     private int replyCount;
+
+    @Setter
+    private List<Reply> replies;
 
 
     //엔터티를 DTO로 변환하는 생성자

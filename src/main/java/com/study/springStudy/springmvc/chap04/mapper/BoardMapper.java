@@ -2,6 +2,7 @@ package com.study.springStudy.springmvc.chap04.mapper;
 
 
 import com.study.springStudy.springmvc.chap04.comon.Search;
+import com.study.springStudy.springmvc.chap04.dto.BoardDetailResponseDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardFindAllDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,7 +24,7 @@ public interface BoardMapper {
     void delete(int boardNum); // o
 
 
-    void updateLook(Board board);
+    void updateLook(BoardDetailResponseDto board);
 
 
     //총 게시물 수 조회

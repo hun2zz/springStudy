@@ -3,6 +3,7 @@ package com.study.springStudy.springmvc.chap04.controller;
 import com.study.springStudy.springmvc.chap04.comon.Page;
 import com.study.springStudy.springmvc.chap04.comon.PageMaker;
 import com.study.springStudy.springmvc.chap04.comon.Search;
+import com.study.springStudy.springmvc.chap04.dto.BoardDetailResponseDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
@@ -71,7 +72,7 @@ public class BoardController {
     //5. 게시글 상세 조회 요청 url : /board/detail (GET)
     @GetMapping("detail")
     public String detail(int bno, Model model, HttpServletRequest request){
-        Board one = service.findOne(bno);
+        BoardDetailResponseDto one = service.findOne(bno);
         service.updateLook(one);
 
 
