@@ -4,6 +4,7 @@ import com.study.springStudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import com.study.springStudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springStudy.springmvc.chap05.entity.Reply;
+import com.study.springStudy.springmvc.chap05.mapper.ReplyMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,8 @@ class ReplyMapperTest {
 
     @Autowired
     BoardMapper boardMapper;
-    @Autowired ReplyMapper replyMapper;
+    @Autowired
+    ReplyMapper replyMapper;
 
 
     /*@Test

@@ -6,8 +6,8 @@ import com.study.springStudy.springmvc.chap04.dto.BoardFindAllDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import com.study.springStudy.springmvc.chap04.mapper.BoardMapper;
-import com.study.springStudy.springmvc.chap05.ReplyMapper;
 import com.study.springStudy.springmvc.chap05.entity.Reply;
+import com.study.springStudy.springmvc.chap05.mapper.ReplyMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

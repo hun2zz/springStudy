@@ -8,7 +8,7 @@
 
 
 <!--namespace 속성에는 사용할 인터페이스의 풀네임을 작성, (패키지 + 인터페이스명을 작성)-->
-<mapper namespace="com.study.springStudy.springmvc.chap05.ReplyMapper">
+<mapper namespace="com.study.springStudy.springmvc.chap05.mapper.ReplyMapper">
     <insert id="save">
         INSERT INTO tbl_reply
             (reply_text, reply_writer, board_no)

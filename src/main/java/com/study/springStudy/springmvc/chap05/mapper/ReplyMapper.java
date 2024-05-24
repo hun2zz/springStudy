@@ -1,6 +1,7 @@
-package com.study.springStudy.springmvc.chap05;
+package com.study.springStudy.springmvc.chap05.mapper;
 
 
+import com.study.springStudy.springmvc.chap05.dto.response.ReplyDetailDto;
 import com.study.springStudy.springmvc.chap05.entity.Reply;
 import org.apache.ibatis.annotations.Mapper;
 
