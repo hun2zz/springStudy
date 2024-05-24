@@ -1,16 +1,19 @@
 package com.study.springStudy.springmvc.chap05.service;
 
 
+import com.study.springStudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springStudy.springmvc.chap05.dto.response.ReplyDetailDto;
 import com.study.springStudy.springmvc.chap05.entity.Reply;
 import com.study.springStudy.springmvc.chap05.mapper.ReplyMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ReplyService {
     public final ReplyMapper replyMapper;
@@ -22,8 +25,12 @@ public class ReplyService {
     }
 
     //댓글 입력
-    public void register() {
-
+    public boolean register(ReplyPostDto dto) {
+        Reply reply = Reply.builder().replyText(dto.getText()).replyWriter(dto.getAuthor()).boardNo(dto.getBno()).build();
+        boolean flag = replyMapper.save(reply);
+        if (flag ) log.info("댓글 등록 성공 !! - {}" , dto);
+        else log.warn ("댓글 등록 ㅅ실패 ");
+        return flag;
     }
 
     //댓글 수정
