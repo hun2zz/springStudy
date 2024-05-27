@@ -1,6 +1,7 @@
 package com.study.springStudy.springmvc.chap05.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.study.springStudy.springmvc.chap05.entity.Reply;
 import lombok.*;
 import org.checkerframework.checker.units.qual.A;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @Builder
 public class ReplyDetailDto {
+    @JsonProperty("reply_no")
     private long rno;
     private String text;
     private String writer;
