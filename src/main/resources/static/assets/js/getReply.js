@@ -44,7 +44,7 @@ export function renderReplies(replies) {
             <span class='col-md-3'>
                 <b>${writer}</b>
             </span>
-            <span class='offset-md-6 col-md-3 text-right'><b>${getRelativeTime()}</b></span>
+            <span class='offset-md-6 col-md-3 text-right'><b>${getRelativeTime(createAt)}</b></span>
         </div><br>
         <div class='row'>
             <div class='col-md-9'>${text}</div>
