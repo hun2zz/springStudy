@@ -21,6 +21,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/v1/replies")
+@CrossOrigin
+// CORS 정책 허용 범위 설정을 함.
+//(origins = {"http://localhost:5500", "http://localhost:5501"})
+//CrossOrigin 을 그냥 붙이면 아무나 받을 수 있음 Public
+// localhost의 5500번 포트만 허용시킴.
 public class ReplyApiController {
     private final ReplyService replyService;
 
@@ -37,7 +42,7 @@ public class ReplyApiController {
         }
         log.info("/api/v1/replies/{}", bno);
         List<ReplyDetailDto> replies = replyService.getReplies(bno);
-        log.debug("first reply : {}", replies.get(0));
+//        log.debug("first reply : {}", replies.get(0));
         return ResponseEntity.ok().body(replies);
     }
 
@@ -69,9 +74,13 @@ public class ReplyApiController {
 //            field는 에러 코드, message는 원인을 보내줌.
             errors.put(error.getField(), error.getDefaultMessage());
         }
-
-
-
         return errors;
+    }
+
+    //삭제 처리 요청
+    @DeleteMapping("/{rno}")
+    public ResponseEntity<?> delete(@PathVariable long rno) {
+        List<ReplyDetailDto> dtoList = replyService.remove(rno);
+        return ResponseEntity.ok().body(dtoList);
     }
 }

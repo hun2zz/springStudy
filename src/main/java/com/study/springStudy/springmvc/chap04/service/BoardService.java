@@ -35,9 +35,9 @@ public class BoardService {
 
     public BoardDetailResponseDto findOne(int num) {
         Board one = boardMapper.findOne(num);
-        List<Reply> all = replyMapper.findAll(num);
+//        List<Reply> all = replyMapper.findAll(num);
         BoardDetailResponseDto boardListResponseDto = new BoardDetailResponseDto(one);
-        boardListResponseDto.setReplies(all);
+//        boardListResponseDto.setReplies(all);
         return boardListResponseDto;
     }
 

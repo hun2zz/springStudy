@@ -8,7 +8,9 @@ import com.study.springStudy.springmvc.chap05.mapper.ReplyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +41,13 @@ public class ReplyService {
     }
 
     //댓글 삭제
-    public void remove() {
+    @Transactional
+    public List<ReplyDetailDto> remove(long boardNo) {
+        long bno = replyMapper.findBno(boardNo);
+        boolean flag = replyMapper.delete(boardNo);
+        //삭제 후 , 댓글 번호로 원본 글번호 찾기 = boardNo fk로 존재함.
+        //삭제 후 삭제된 목록을 리턴해줌.
+        return flag ? getReplies(bno) : Collections.emptyList();
 
     }
 }
