@@ -1,8 +1,11 @@
 package com.study.springStudy.springmvc.chap05.api;
 
 
+import com.study.springStudy.springmvc.chap04.comon.Page;
 import com.study.springStudy.springmvc.chap05.dto.request.ReplyPostDto;
+import com.study.springStudy.springmvc.chap05.dto.request.ReplyUpdateDto;
 import com.study.springStudy.springmvc.chap05.dto.response.ReplyDetailDto;
+import com.study.springStudy.springmvc.chap05.dto.response.ReplyListDto;
 import com.study.springStudy.springmvc.chap05.entity.Reply;
 import com.study.springStudy.springmvc.chap05.service.ReplyService;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +35,8 @@ public class ReplyApiController {
     //댓글 목록 조회 요청
     // URL : /api/v1/replies/원본글번호    - GET - > 목록조회
     // @PathVariable : URL에 붙어있는 변수값을 읽는 아노테이션
-    @GetMapping("/{bno}")
-    public ResponseEntity<?> list(@PathVariable long bno) {
+    @GetMapping("/{bno}/page/{pageNo}")
+    public ResponseEntity<?> list(@PathVariable long bno, @PathVariable int pageNo) {
         if (bno == 0) {
             String s = "글 번호는 0번이 될 수 없습니다.";
             log.warn(s);
@@ -41,7 +44,7 @@ public class ReplyApiController {
             return ResponseEntity.badRequest().body(s);
         }
         log.info("/api/v1/replies/{}", bno);
-        List<ReplyDetailDto> replies = replyService.getReplies(bno);
+        ReplyListDto replies = replyService.getReplies(bno, new Page(pageNo, 5));
 //        log.debug("first reply : {}", replies.get(0));
         return ResponseEntity.ok().body(replies);
     }
@@ -62,7 +65,14 @@ public class ReplyApiController {
         }
         boolean flag = replyService.register(dto);
         if (!flag) return ResponseEntity.internalServerError().body("댓글 등록 실패");
-        return ResponseEntity.ok().body(replyService.getReplies(dto.getBno()));
+        return ResponseEntity.ok().body(replyService.getReplies(dto.getBno(), new Page(1, 10)));
+    }
+
+    @PutMapping
+    public ResponseEntity<?> update(ReplyUpdateDto dto) {
+        replyService.modify(dto);
+        log.info("api/v1/replies : update ");
+        return ResponseEntity.ok().body("ok");
     }
 
     private Map<String, String> makeValidatonMessageMap(BindingResult result) {
@@ -80,7 +90,7 @@ public class ReplyApiController {
     //삭제 처리 요청
     @DeleteMapping("/{rno}")
     public ResponseEntity<?> delete(@PathVariable long rno) {
-        List<ReplyDetailDto> dtoList = replyService.remove(rno);
+        ReplyListDto dtoList = replyService.remove(rno);
         return ResponseEntity.ok().body(dtoList);
     }
 }

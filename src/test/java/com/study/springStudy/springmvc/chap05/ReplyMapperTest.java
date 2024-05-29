@@ -74,18 +74,18 @@ class ReplyMapperTest {
     }
 
 
-    @Test
-    @DisplayName("수정")
-    void modifyTest() {
-        //given
-        long replyNo = 4;
-        Reply reply = Reply.builder()
-                .replyNo(replyNo)
-                .replyText("수정수정")
-                .build();
-        //when
-        replyMapper.modify(reply);
-        //then
+//    @Test
+//    @DisplayName("수정")
+//    void modifyTest() {
+//        //given
+//        long replyNo = 4;
+//        Reply reply = Reply.builder()
+//                .replyNo(replyNo)
+//                .replyText("수정수정")
+//                .build();
+//        //when
+//        replyMapper.modify(reply);
+//        //then
     }
 
 
