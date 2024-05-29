@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper 파일은 실행할 SQL을 적는 파일-->
+<!--생성한 mapper 파일은 mybatis-config.xml에 사용등록을 해야함.-->
+
+
+<!--namespace 속성에는 사용할 인터페이스의 풀네임을 작성, (패키지 + 인터페이스명을 작성)-->
+<mapper namespace="com.study.springStudy.springmvc.chap05.mapper.MemberMapper">
+    <insert id="save">
+        INSERT INTO tbl_member
+            (account, password, name, email)
+        VALUES
+            (#{account}, #{password}, #{name}, #{email})
+    </insert>
+
+    <select id="findOne" resultType="member">
+        SELECT
+            account,
+            password,
+            name,
+            email,
+            auth,
+            reg_date
+        FROM tbl_member
+        WHERE account = #{account}
+    </select>
+
+    <select id="existsById" resultType="boolean">
+        SELECT COUNT(*)
+        FROM tbl_member
+        <if test="type == 'account'">
+        WHERE account = #{keyword}
+        </if>
+        <if test="type == 'email'">
+            WHERE email = #{keyword}
+        </if>
+    </select>
+</mapper>
