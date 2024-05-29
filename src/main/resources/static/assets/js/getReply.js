@@ -32,25 +32,6 @@ function getRelativeTime(createAt) {
     }
 }
 
-export async function deleteReply(pageInfo) {
-    document.querySelectorAll('#replyDelBtn').forEach($dLi => {
-        $dLi.addEventListener('click', async (e) => {
-            e.preventDefault();
-            const replyId = e.target.closest('.card-body').dataset.replyId;
-            console.log(replyId);
-
-            const res = await fetch(`${BASE_URL}/${replyId}`, {
-                method: 'DELETE',
-            });
-
-            if (res.ok) {
-                fetchReplies(pageInfo.pageInfo.pageNo);
-            } else {
-                alert('댓글 삭제에 실패했습니다.');
-            }
-        });
-    });
-}
 
 export async function updateReply({replies, pageInfo}) {
     document.querySelectorAll('#replyModBtn').forEach($mod => {
@@ -229,7 +210,7 @@ export async function fetchInfScrollReplies(pageNo=1) {
     const bno = document.getElementById('wrap').dataset.bno; // 게시물 글번호
     const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
     const replies = await res.json();
-    if (pageNo == 1 ) {
+    if (pageNo === 1 ) {
         //총 댓글 수 전역변수 값 세팅
         totalReplies = replies.pageInfo.totalCount;
         loadedReplies = 0; // 댓글 입력, 삭제 시 다시 1페이지 로딩시 초기값으로 만들기
@@ -237,6 +218,7 @@ export async function fetchInfScrollReplies(pageNo=1) {
         document.getElementById('replyCnt').textContent = totalReplies;
         //초기 댓글 리셋
         document.getElementById('replyData').innerHTML = '';
+        setupInfiniteScroll()
 
     }
 
@@ -262,7 +244,7 @@ async function scrollHandler(e) {
     //서버에서 데이터를 비동기로 불러와야 함.
         //2초의 대기열이 생성되면 다음 대기열 생성까지 2초를 기다려야 함.
         showSpinner()
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 500));
     fetchInfScrollReplies(currentPage + 1);
     }
 }

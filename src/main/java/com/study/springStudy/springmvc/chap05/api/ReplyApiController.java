@@ -44,7 +44,7 @@ public class ReplyApiController {
             return ResponseEntity.badRequest().body(s);
         }
         log.info("/api/v1/replies/{}", bno);
-        ReplyListDto replies = replyService.getReplies(bno, new Page(pageNo, 5));
+        ReplyListDto replies = replyService.getReplies(bno, new Page(pageNo, 10));
 //        log.debug("first reply : {}", replies.get(0));
         return ResponseEntity.ok().body(replies);
     }
@@ -68,12 +68,32 @@ public class ReplyApiController {
         return ResponseEntity.ok().body(replyService.getReplies(dto.getBno(), new Page(1, 10)));
     }
 
-    @PutMapping
-    public ResponseEntity<?> update(ReplyUpdateDto dto) {
-        replyService.modify(dto);
-        log.info("api/v1/replies : update ");
-        return ResponseEntity.ok().body("ok");
+    //댓글 수정 요청
+    @RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH})//
+    // put과 patch 매핑의 차이는 put은 전체수정, patch는 일부수정임.
+//    ex
+    /*
+        const obj = {
+            age : 3,
+            }
+
+        put - obj = {}; 객체를 아예 새로 갈아끼움
+        patch - obj.age = 10; 으로 수정함! - 객체의 프로퍼티만 조작함.
+     */
+    public ResponseEntity<?> update(@Validated @RequestBody ReplyUpdateDto dto, BindingResult result) {
+
+        log.info("api/v1/replies : PUT, PATCH ");
+        log.debug("parameter : {}" , dto);
+
+        if(result.hasErrors()) {
+            Map<String, String> erros = makeValidatonMessageMap(result);
+            return ResponseEntity.badRequest().body(erros);
+        }
+        ReplyListDto modify = replyService.modify(dto);
+        return ResponseEntity.ok().body(modify);
     }
+
+
 
     private Map<String, String> makeValidatonMessageMap(BindingResult result) {
         Map<String, String> errors = new HashMap<>();

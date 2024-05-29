@@ -16,7 +16,7 @@ public interface ReplyMapper {
     boolean save(Reply reply);
 
     //댓글 수정
-    boolean modify(ReplyUpdateDto reply);
+    boolean modify(Reply reply);
 
     //댓글 삭제
     boolean delete(long replyNo);
