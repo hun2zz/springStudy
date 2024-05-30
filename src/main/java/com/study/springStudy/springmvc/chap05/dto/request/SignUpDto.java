@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode
+@Setter
 public class SignUpDto {
     @NotBlank
     @Size(min = 4, max = 14)

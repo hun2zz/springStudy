@@ -7,6 +7,7 @@ import com.study.springStudy.springmvc.chap05.entity.Member;
 import com.study.springStudy.springmvc.chap05.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -55,5 +56,12 @@ public class MemberService {
 
         log.info("{}님 로그인 성공", foundMember.getName());
         return SUCCESS;
+    }
+
+    //아이디, 이메일 중복검사
+    public boolean checkIdentifier(@Param("type") String type, @Param("keyword") String keyword) {
+        System.out.println("타입은! = " + type);
+        System.out.println("키워드는! = " + keyword);
+        return memberMapper.existsById(type, keyword);
     }
 }

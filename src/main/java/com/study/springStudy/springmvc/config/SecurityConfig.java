@@ -15,8 +15,8 @@ public class SecurityConfig {
     //Bean은 내가 안 만든 클래스를 스프링한테 주입시키는 아노테이션임.
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //모든 요청에 대해 인증하지 않겠다.
-        http.authorizeHttpRequests()
-                .antMatchers("/**").permitAll();
+        http.csrf().disable() // csrf 토큰공격방지 기능 off //모든 요청에 대해 인증하지 않겠다.
+                .authorizeHttpRequests().antMatchers("/**").permitAll();
         return http.build();
     }
 
