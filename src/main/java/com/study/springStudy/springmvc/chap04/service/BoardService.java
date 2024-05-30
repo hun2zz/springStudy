@@ -27,8 +27,6 @@ public class BoardService {
         return all.stream().map(BoardListResponseDto::new).collect(Collectors.toList());
     }
 
-
-
     public void save(Board board) {
         boardMapper.save(board);
     }

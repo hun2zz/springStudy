@@ -49,11 +49,11 @@ public class BoardController {
         return "board/write";
     }
 
+
 //    3. 게시글 등록 요청 url : /board/write : (POST)
 //    -> 등록이 끝나면 목록조회 요청을 리다이렉션 해야함.
     @PostMapping("write")
     public String write1(BoardDto dto) {
-
         Board board = new Board(dto);
         service.save(board);
         return "redirect:/board/list";

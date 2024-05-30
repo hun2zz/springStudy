@@ -12,10 +12,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class Member {
-    private int account;
-    private int password;
-    private int name;
-    private int email;
+    private String account;
+    @Setter
+    private String password;
+    private String name;
+    private String  email;
     private Auth auth;
     private LocalDateTime regDate;
 

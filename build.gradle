@@ -19,13 +19,18 @@ repositories {
 }
 
 dependencies {
+//    스프링 종합 선물  세트
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    //롬복
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    //JUNIT
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     //jsp 라이브러리 추가
-    implementation 'javax.servlet:jstl'
+    implementation 'javax.servlet:jstl' // c forEach 이런 거 쓰는 거!
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 
 //   마리아 DB
@@ -34,12 +39,16 @@ dependencies {
     //spring jdbc 모듈
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
+
+    //MyBatis 모듈
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
 
     // 입력값 검증 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    //스프링 시큐리티 모듈
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
 
 }
