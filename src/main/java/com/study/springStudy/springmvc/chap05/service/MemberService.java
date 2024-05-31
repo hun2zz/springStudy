@@ -3,6 +3,7 @@ package com.study.springStudy.springmvc.chap05.service;
 
 import com.study.springStudy.springmvc.chap05.dto.request.LoginDto;
 import com.study.springStudy.springmvc.chap05.dto.request.SignUpDto;
+import com.study.springStudy.springmvc.chap05.dto.response.LoginUserInfoDto;
 import com.study.springStudy.springmvc.chap05.entity.Member;
 import com.study.springStudy.springmvc.chap05.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpSession;
 
 import static com.study.springStudy.springmvc.chap05.service.LoginResult.*;
 
@@ -34,7 +38,7 @@ public class MemberService {
 
     //로그인 검증 처리
 
-    public LoginResult authenticate(LoginDto dto) {
+    public LoginResult authenticate(LoginDto dto, HttpSession session, RedirectAttributes ra) {
         //회원가입 여부 확인
         Member foundMember = memberMapper.findOne(dto.getAccount());
         if(foundMember == null) {
@@ -55,6 +59,11 @@ public class MemberService {
         }
 
         log.info("{}님 로그인 성공", foundMember.getName());
+        //세션의 수명 : 설정된 시간 OR 브라우저를 닫기 전까지
+        session.setMaxInactiveInterval(3600);
+        int maxInactiveInterval = session.getMaxInactiveInterval();
+        log.debug("session time : {}", maxInactiveInterval);
+        session.setAttribute("login", new LoginUserInfoDto(foundMember));
         return SUCCESS;
     }
 

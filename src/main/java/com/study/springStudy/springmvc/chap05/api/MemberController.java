@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 
 //RestController는 JSON을 보내기 때문에 jsp를 여려면 ModelAndView를 사용해야함!
 //그냥 Controller에서 JSON을 보내며녀 ResponseBody를 붙여줌
@@ -65,10 +68,14 @@ public class MemberController {
 
     //로그인 요청 처리
     @PostMapping("/sign-in")
-    public String signIn (LoginDto dto, RedirectAttributes ra) {
+    public String signIn (LoginDto dto, HttpServletRequest request, RedirectAttributes ra) {
         log.info("/members/sign-in POST");
         log.debug("parameter : {} ", dto);
-        LoginResult result = memberService.authenticate(dto);
+
+        //세션 얻기
+        HttpSession session = request.getSession();
+
+        LoginResult result = memberService.authenticate(dto, session,ra);
 
         //로그인 검증 결과를 JSP 에게 전송해주기 위해 Model에 넣어서 보냄!
         //redirect 시에 redirect된 페이지에 데이터를 보낼때는
