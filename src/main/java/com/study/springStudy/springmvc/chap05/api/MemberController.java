@@ -1,19 +1,23 @@
 package com.study.springStudy.springmvc.chap05.api;
 
 
+import com.study.springStudy.springmvc.chap05.dto.request.LoginDto;
 import com.study.springStudy.springmvc.chap05.dto.request.SignUpDto;
+import com.study.springStudy.springmvc.chap05.service.LoginResult;
 import com.study.springStudy.springmvc.chap05.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 //RestController는 JSON을 보내기 때문에 jsp를 여려면 ModelAndView를 사용해야함!
@@ -42,7 +46,7 @@ public class MemberController {
 
         boolean flag = memberService.join(dto);
 
-        return flag ? "redirect:/board/list" : "redirect:/members/sign-up";
+        return flag ? "redirect:/members/sign-in" : "redirect:/members/sign-up";
     }
 
     //아이디. 이메일 중복검사 비동기 요청 처리
@@ -52,5 +56,29 @@ public class MemberController {
         boolean flag = memberService.checkIdentifier(type, keyword);
         log.debug("{} 중복체크 결과 ? {}", type, flag);
         return ResponseEntity.ok().body(flag);
+    }
+    // 로그인 양식 열기
+    @GetMapping("/sign-in")
+    public void signIn() {
+        log.info("/members/sign-in GET : forwarding to sign-in.jsp");
+    }
+
+    //로그인 요청 처리
+    @PostMapping("/sign-in")
+    public String signIn (LoginDto dto, RedirectAttributes ra) {
+        log.info("/members/sign-in POST");
+        log.debug("parameter : {} ", dto);
+        LoginResult result = memberService.authenticate(dto);
+
+        //로그인 검증 결과를 JSP 에게 전송해주기 위해 Model에 넣어서 보냄!
+        //redirect 시에 redirect된 페이지에 데이터를 보낼때는
+        //model 객체를 사용할 수 없음
+//        왜냐면 model 객체를 request 객체를 사용하는데 해당 객체는
+//                한 번의 요청이 끝나면 메모리에서 제거된다.
+        ra.addFlashAttribute("result", result);
+        if (result == LoginResult.SUCCESS) {
+            return "redirect:/index"; //로그인 성공 시
+        }
+        return "redirect:/members/sign-in";
     }
 }

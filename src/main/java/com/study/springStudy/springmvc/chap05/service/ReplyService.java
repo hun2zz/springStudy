@@ -54,8 +54,5 @@ public class ReplyService {
         //삭제 후 , 댓글 번호로 원본 글번호 찾기 = boardNo fk로 존재함.
         //삭제 후 삭제된 목록을 리턴해줌.
         return flag ? getReplies(bno, new Page(1, 10)) : null;
-
     }
-
-
 }
