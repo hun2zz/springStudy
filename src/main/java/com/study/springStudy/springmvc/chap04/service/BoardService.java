@@ -4,13 +4,16 @@ import com.study.springStudy.springmvc.chap04.comon.Search;
 import com.study.springStudy.springmvc.chap04.dto.BoardDetailResponseDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardFindAllDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardListResponseDto;
+import com.study.springStudy.springmvc.chap04.dto.BoardWriterDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import com.study.springStudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springStudy.springmvc.chap05.entity.Reply;
 import com.study.springStudy.springmvc.chap05.mapper.ReplyMapper;
+import com.study.springStudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
@@ -27,8 +30,11 @@ public class BoardService {
         return all.stream().map(BoardListResponseDto::new).collect(Collectors.toList());
     }
 
-    public void save(Board board) {
-        boardMapper.save(board);
+    public void save(BoardWriterDto boarddto, HttpSession session) {
+        //계정명을 엔터티에 추가
+        Board entity = boarddto.toEntity();
+        entity.setAccount(LoginUtil.getLoggedUser(session));
+        boardMapper.save(entity);
     }
 
     public BoardDetailResponseDto findOne(int num) {

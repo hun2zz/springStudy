@@ -83,7 +83,7 @@
 
   <form action="#" method="post">
     <label for="title">작성자</label>
-    <input type="text" id="writer" name="writer" required>
+    <input type="text" id="writer" name="writer" value="${login.nickName}" READONLY>
     <label for="title">제목</label>
     <input type="text" id="title" name="title" required>
     <label for="content">내용</label>

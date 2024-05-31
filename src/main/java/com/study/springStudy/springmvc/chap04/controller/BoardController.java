@@ -6,8 +6,10 @@ import com.study.springStudy.springmvc.chap04.comon.Search;
 import com.study.springStudy.springmvc.chap04.dto.BoardDetailResponseDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardListResponseDto;
+import com.study.springStudy.springmvc.chap04.dto.BoardWriterDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import com.study.springStudy.springmvc.chap04.service.BoardService;
+import com.study.springStudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.regex.qual.Regex;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,9 +56,8 @@ public class BoardController {
 //    3. 게시글 등록 요청 url : /board/write : (POST)
 //    -> 등록이 끝나면 목록조회 요청을 리다이렉션 해야함.
     @PostMapping("write")
-    public String write1(BoardDto dto) {
-        Board board = new Board(dto);
-        service.save(board);
+    public String write1(BoardWriterDto dto, HttpSession session) {
+        service.save(dto, session);
         return "redirect:/board/list";
     }
 
@@ -71,7 +73,7 @@ public class BoardController {
 
     //5. 게시글 상세 조회 요청 url : /board/detail (GET)
     @GetMapping("detail")
-    public String detail(int bno, Model model, HttpServletRequest request){
+    public String detail(int bno, Model model, HttpServletRequest request,HttpSession session){
         BoardDetailResponseDto one = service.findOne(bno);
         service.updateLook(one);
 

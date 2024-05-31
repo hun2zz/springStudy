@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 
 import static com.study.springStudy.springmvc.chap05.service.LoginResult.*;
+import static com.study.springStudy.springmvc.util.LoginUtil.LOGIN;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +64,7 @@ public class MemberService {
         session.setMaxInactiveInterval(3600);
         int maxInactiveInterval = session.getMaxInactiveInterval();
         log.debug("session time : {}", maxInactiveInterval);
-        session.setAttribute("login", new LoginUserInfoDto(foundMember));
+        session.setAttribute(LOGIN, new LoginUserInfoDto(foundMember));
         return SUCCESS;
     }
 

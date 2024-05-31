@@ -29,7 +29,7 @@
     <!--    id 속성에 인터페이스의 추상메서드명을 적는다.-->
     <insert id ="save">
         INSERT INTO tbl_board
-        (title, content, writer) VALUES (#{title}, #{content}, #{writer})
+        (title, content, writer, account) VALUES (#{title}, #{content}, #{writer}, #{account})
     </insert>
 
     <delete id="delete">
@@ -45,7 +45,8 @@
         B.writer,
         B.reg_date_time,
         B.view_count,
-        COUNT(R.reply_no) AS reply_count
+        COUNT(R.reply_no) AS reply_count,
+        B.account
         FROM tbl_board B
         LEFT OUTER JOIN tbl_reply R
         ON B.board_no = R.board_no
@@ -57,8 +58,16 @@
 
     <!--    만약 findOne 메서드에 파라미터가 있다면 파라미터의 값을 적어주는 것.-->
     <select id="findOne" resultType="board">
-        SELECT * FROM tbl_board
-        WHERE board_no = #{boardNum}
+        SELECT
+        B.board_no, B.title, M.name AS writer
+        , B.content, B.view_count
+        , B.reg_date_time, M.account
+        FROM tbl_board B
+        LEFT OUTER JOIN tbl_member M
+        ON B.account = M.account
+        WHERE board_no = #{boardNo}
+        ORDER BY board_no DESC
+        ;
     </select>
 
     <update id="updateLook">

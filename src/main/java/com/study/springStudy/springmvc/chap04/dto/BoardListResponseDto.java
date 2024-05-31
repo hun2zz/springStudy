@@ -21,6 +21,7 @@ public class BoardListResponseDto {
     private boolean hit;// hit 게시물인가 ?
     private boolean newArticle;
     private int replyCount;
+    private String account;
 
     @Setter
     private List<Reply> replies;
@@ -38,6 +39,7 @@ public class BoardListResponseDto {
         this.hit = this.view > 5;
         this.newArticle = LocalDateTime.now().isBefore(regTime.plusMinutes(5));
         this.replyCount = b.getReplyCount();
+        this.account = b.getAccount();
     }
 
     private String dateForMatting(LocalDateTime reg) {

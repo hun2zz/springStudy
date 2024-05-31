@@ -122,6 +122,10 @@
 <div id="wrap" class="form-container" data-bno="${num.boardNo}">
   <h1>${num.boardNo}</h1>
   <h2>${num.regDateTime}</h2>
+
+  <label for="writer">작성자</label>
+  <input type="text" id="writer" name="writer" value="${num.writer}" readonly>
+
   <label for="title">제목</label>
   <input type="text" id="title" name="title" value="${num.title}" readonly>
   <label for="content">내용</label>

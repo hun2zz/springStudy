@@ -10,6 +10,7 @@ import org.checkerframework.checker.units.qual.A;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class LoginUserInfoDto {
     //클라이언트에 보낼 정보
     private String account;
@@ -21,6 +22,6 @@ public class LoginUserInfoDto {
         this.account = member.getAccount();
         this.email = member.getEmail();
         this.nickName= member.getName();
-        this.auth = member.getAuth().toString();
+        this.auth = member.getAuth().name();
     }
 }

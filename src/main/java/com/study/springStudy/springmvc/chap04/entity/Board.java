@@ -33,6 +33,7 @@ public class Board {
     private String writer; //작성자
     private int viewCount; //조회수
     private LocalDateTime regDateTime; // 작성일시
+    private String account; // 글쓴이 계정명
 
     public Board(BoardDto dto) {
         this.title = dto.getTitle();
