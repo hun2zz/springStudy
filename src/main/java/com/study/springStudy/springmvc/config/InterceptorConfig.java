@@ -15,6 +15,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     private final AfterLoginInterceptor afterLoginInterceptor;
     private final BoardInterceptor boardInterceptor;
 
+
     //설정 메서드
 
 
@@ -28,6 +29,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registry.addInterceptor(boardInterceptor)
                 .addPathPatterns("/board/*")
                 .excludePathPatterns("/board/list", "/board/detail");
+
 
     }
 

@@ -72,7 +72,7 @@ public class BoardController {
 
 
     //5. 게시글 상세 조회 요청 url : /board/detail (GET)
-    @GetMapping("detail")
+    @GetMapping("/detail")
     public String detail(int bno, Model model, HttpServletRequest request,HttpSession session){
         BoardDetailResponseDto one = service.findOne(bno);
         service.updateLook(one);
