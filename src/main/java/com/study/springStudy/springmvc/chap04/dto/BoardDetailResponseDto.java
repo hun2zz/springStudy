@@ -2,6 +2,7 @@ package com.study.springStudy.springmvc.chap04.dto;
 
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import com.study.springStudy.springmvc.chap05.entity.Reply;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +26,9 @@ public class BoardDetailResponseDto {
         this.title = b.getTitle();
         this.writer = b.getWriter();
         this.content = b.getContent();
-        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 hh시 mm분 ss초");
+
+        DateTimeFormatter pattern
+                = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a hh시 mm분 ss초");
         this.regDateTime = pattern.format(b.getRegDateTime());
     }
 }

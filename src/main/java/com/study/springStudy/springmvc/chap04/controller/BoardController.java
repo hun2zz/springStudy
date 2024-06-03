@@ -8,6 +8,7 @@ import com.study.springStudy.springmvc.chap04.dto.BoardDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardWriterDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
+import com.study.springStudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springStudy.springmvc.chap04.service.BoardService;
 import com.study.springStudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,20 +21,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.study.springStudy.springmvc.util.LoginUtil.LOGIN;
 
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService service;
+    private final BoardMapper boardMapper;
 
     @GetMapping("/list")
     //1. 목록 조회 요청 url : /board/list : (GET)
-    public String list (Model model, @ModelAttribute ("s") Search page) {
+    public String list(Model model, @ModelAttribute("s") Search page) {
         List<BoardListResponseDto> scoreL = service.getList(page);
         // 페이지 정보를 생성하여 JSP에게 전송
         PageMaker pageMaker = new PageMaker(page, service.getCount(page));
@@ -53,7 +58,7 @@ public class BoardController {
     }
 
 
-//    3. 게시글 등록 요청 url : /board/write : (POST)
+    //    3. 게시글 등록 요청 url : /board/write : (POST)
 //    -> 등록이 끝나면 목록조회 요청을 리다이렉션 해야함.
     @PostMapping("write")
     public String write1(BoardWriterDto dto, HttpSession session) {
@@ -73,18 +78,21 @@ public class BoardController {
 
     //5. 게시글 상세 조회 요청 url : /board/detail (GET)
     @GetMapping("/detail")
-    public String detail(int bno, Model model, HttpServletRequest request,HttpSession session){
-        BoardDetailResponseDto one = service.findOne(bno);
-        service.updateLook(one);
+    public String detail(int bno, Model model, HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+        System.out.println("/board/detail GET");
 
+        // 1. 상세조회하고 싶은 글번호를 읽기
+        System.out.println("bno = " + bno);
 
+        // 2. 데이터베이스로부터 해당 글번호 데이터 조회하기
+        BoardDetailResponseDto dto = service.detail(bno, request, response);
 
-        model.addAttribute("num", one);
+        // 3. JSP파일에 조회한 데이터 보내기
+        model.addAttribute("num", dto);
 
-        //요청 헤더를 파싱하여 이전 페이지의 주소를 ㅓ얻어낸다.
+        // 4. 요청 헤더를 파싱하여 이전 페이지의 주소를 얻어냄
         String ref = request.getHeader("Referer");
         model.addAttribute("ref", ref);
-
         return "board/detail";
     }
 }

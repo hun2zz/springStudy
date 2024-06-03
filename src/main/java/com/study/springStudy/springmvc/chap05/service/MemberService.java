@@ -1,6 +1,7 @@
 package com.study.springStudy.springmvc.chap05.service;
 
 
+import com.study.springStudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springStudy.springmvc.chap05.dto.request.AutoLoginDto;
 import com.study.springStudy.springmvc.chap05.dto.request.LoginDto;
 import com.study.springStudy.springmvc.chap05.dto.request.SignUpDto;
@@ -14,6 +15,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +35,7 @@ public class MemberService {
     private final MemberMapper memberMapper;
     private final PasswordEncoder encoder;
     private final ReplyService replyService;
+    private final BoardMapper boardMapper;
 
     //회원 가입 중간 처리
     public boolean join(SignUpDto dto) {
@@ -113,5 +116,22 @@ public class MemberService {
         System.out.println("타입은! = " + type);
         System.out.println("키워드는! = " + keyword);
         return memberMapper.existsById(type, keyword);
+    }
+
+    public void autoLoginClear(HttpServletRequest request, HttpServletResponse rp) {
+
+        //1. 쿠키 제거하기
+        Cookie c = WebUtils.getCookie(request, AUTO_LOGIN_COOKIE);
+        if (c != null) {
+            c.setPath("/");
+            c.setMaxAge(0);
+            rp.addCookie(c);
+        }
+
+        //2. DB에 자동로그인 컬럼들을 원래대로 돌려놓음
+        memberMapper.updateAutoLogin(
+                AutoLoginDto.builder().sessionId("none").limitTime(LocalDateTime.now())
+                        .account(LoginUtil.getLoggedUser(request.getSession())).build()
+        );
     }
 }
