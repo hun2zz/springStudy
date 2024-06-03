@@ -93,7 +93,7 @@
 <%--                관리자 이거나 본인이 쓴 글에만 렌더링 되도록 --%>
                 <c:if test="${login.auth == 'ADMIN' ||login.account == b.account}">
                 <div class="card-btn-group">
-                    <button class="del-btn" data-href="/board/delete?bno=${b.boardNo}">
+                    <button class="del-btn" data-href="/board/delete?num=${b.boardNo}">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>

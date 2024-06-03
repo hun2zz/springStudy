@@ -13,6 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Configuration
 @Slf4j
@@ -33,10 +34,12 @@ public class BoardInterceptor implements HandlerInterceptor {
             if (one.getAccount().equals(LoginUtil.getLoggedUser(request.getSession()))){
                 return true;
             } else if (!one.getAccount().equals(LoginUtil.getLoggedUser(request.getSession()))){
-                response.sendRedirect("/members/sign-in?message=login-required&redirect=/board/list" );
+                response.setStatus(403);
+                response.sendRedirect("/access-deny?message=authorization");
                 return false;
             }
-            if (!LoginUtil.isLoggedIn(request.getSession())) {
+            HttpSession session = request.getSession();
+            if (!LoginUtil.isLoggedIn(session)) {
                 response.sendRedirect("/members/sign-in?message=login-required&redirect=/board/list");
                 return false; // true 일 경우 컨트롤러 진입 허용, false 진입 차단
 
@@ -44,6 +47,9 @@ public class BoardInterceptor implements HandlerInterceptor {
 //            model.addAttribute("ref", ref);
 
                 //삭제 요청이 들어오면 서버에서 한번 더 관리자인지 ? 자기가 쓴글인지 체크하기
+            }
+            if (LoginUtil.isAdmin(session)) {
+                return true;
             }
             return true;
         }
