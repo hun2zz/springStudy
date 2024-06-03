@@ -1,11 +1,13 @@
 package com.study.springStudy.springmvc.chap05.service;
 
 
+import com.study.springStudy.springmvc.chap05.dto.request.AutoLoginDto;
 import com.study.springStudy.springmvc.chap05.dto.request.LoginDto;
 import com.study.springStudy.springmvc.chap05.dto.request.SignUpDto;
 import com.study.springStudy.springmvc.chap05.dto.response.LoginUserInfoDto;
 import com.study.springStudy.springmvc.chap05.entity.Member;
 import com.study.springStudy.springmvc.chap05.mapper.MemberMapper;
+import com.study.springStudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
@@ -13,9 +15,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import java.time.LocalDateTime;
+
 import static com.study.springStudy.springmvc.chap05.service.LoginResult.*;
+import static com.study.springStudy.springmvc.util.LoginUtil.AUTO_LOGIN_COOKIE;
 import static com.study.springStudy.springmvc.util.LoginUtil.LOGIN;
 
 @Service
@@ -24,6 +32,7 @@ import static com.study.springStudy.springmvc.util.LoginUtil.LOGIN;
 public class MemberService {
     private final MemberMapper memberMapper;
     private final PasswordEncoder encoder;
+    private final ReplyService replyService;
 
     //회원 가입 중간 처리
     public boolean join(SignUpDto dto) {
@@ -39,8 +48,9 @@ public class MemberService {
 
     //로그인 검증 처리
 
-    public LoginResult authenticate(LoginDto dto, HttpSession session, RedirectAttributes ra) {
+    public LoginResult authenticate(LoginDto dto, HttpSession session, HttpServletResponse rs) {
         //회원가입 여부 확인
+        String account = dto.getAccount();
         Member foundMember = memberMapper.findOne(dto.getAccount());
         if(foundMember == null) {
             log.info("{} - 회원가입이 필요합니다.", dto.getAccount());
@@ -57,6 +67,32 @@ public class MemberService {
         if(!encoder.matches(inputPassword, originPassword)) {
             log.info("비밀번호가 일치하지 않습니다.");
             return NO_PW;
+        }
+
+        //자동 로그인 추가 처리
+        if(dto.isAutoLogin()) {
+            //1. 자동 로그인 쿠키 생성
+            // - 쿠키 내부에 절대로 중복되지 않는 유니크한 값을 저장
+            // (UUID, SessionID)
+            String id = session.getId();
+            Cookie autoLoginCookie = new Cookie(AUTO_LOGIN_COOKIE, id);
+
+            //쿠키 설정
+            autoLoginCookie.setPath("/"); // 쿠키를 사용ㅎㄹ 경로
+            autoLoginCookie.setMaxAge(60 * 60 * 24 * 90); // 자동 로그인 유지 기간
+
+            //2. 쿠키를 클라이언트에 전송 - 응답바디에 실어보내야함.
+            rs.addCookie(autoLoginCookie);
+
+
+
+            //3. DB에 해당 쿠키값을 저장
+            memberMapper.updateAutoLogin(AutoLoginDto.builder().
+                    sessionId(id)
+                            .limitTime(LocalDateTime.now().plusDays(90))
+                            .account(account)
+                    .build());
+
         }
 
         log.info("{}님 로그인 성공", foundMember.getName());
