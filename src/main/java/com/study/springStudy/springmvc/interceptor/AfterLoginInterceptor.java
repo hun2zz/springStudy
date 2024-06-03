@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @Slf4j
+
 public class AfterLoginInterceptor implements HandlerInterceptor {
     // 클라이언트의 요청이 컨트롤러에 들어가기 전에 해야할 일을 명시
     @Override
