@@ -150,7 +150,8 @@
     //서버에 좋아요, 싫어요 요청을 보내는 함수
     async function sendReaction(reactionType) {
       console.log(reactionType)
-      // const res = await fetch();
+      const bno = document.getElementById('wrap').dataset.bno;
+      const res = await fetch(`/board/\${reactionType}?bno=\${bno}`);
 
     }
     //좋아요 클릭 이벤트

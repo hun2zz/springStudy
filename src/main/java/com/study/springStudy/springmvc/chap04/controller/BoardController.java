@@ -10,15 +10,16 @@ import com.study.springStudy.springmvc.chap04.dto.BoardWriterDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import com.study.springStudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springStudy.springmvc.chap04.service.BoardService;
+import com.study.springStudy.springmvc.chap05.service.ReactionService;
 import com.study.springStudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.regex.qual.Regex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,8 +34,9 @@ import static com.study.springStudy.springmvc.util.LoginUtil.LOGIN;
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
+    private static final Logger log = LoggerFactory.getLogger(BoardController.class);
     private final BoardService service;
-    private final BoardMapper boardMapper;
+    private final ReactionService reactionService;
 
     @GetMapping("/list")
     //1. 목록 조회 요청 url : /board/list : (GET)
@@ -97,7 +99,23 @@ public class BoardController {
     }
 
     //4. 좋아요 요청 비동기 처리
+    @GetMapping("/like")
+    @ResponseBody
+    public ResponseEntity<?> like(long bno, HttpSession session) {
+        log.info("like!");
+        String account = LoginUtil.getLoggedUser(session);
+        reactionService.like(bno, account);
+        return null;
+    }
 
 
     //5. 싫어요 요청 비동기 처리
+    @GetMapping("/dislike")
+    @ResponseBody
+    public ResponseEntity<?> dislike(long bno, HttpSession session) {
+        log.info("dislike!");
+        String account = LoginUtil.getLoggedUser(session);
+        reactionService.dislike(bno, account);
+        return null;
+    }
 }
