@@ -18,8 +18,16 @@ public class BoardDetailResponseDto {
     private String content;
     private String regDateTime;
 
+
     @Setter
-    private List<Reply> replies;
+    private int likeCount;
+    @Setter
+    private int disLikeCount;
+    @Setter
+    private String userReaction;
+
+//    @Setter
+//    private List<Reply> replies;
 
     public BoardDetailResponseDto(Board b) {
         this.boardNo = b.getBoardNo();

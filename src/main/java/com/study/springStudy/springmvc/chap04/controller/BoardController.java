@@ -103,6 +103,9 @@ public class BoardController {
     @GetMapping("/like")
     @ResponseBody
     public ResponseEntity<?> like(long bno, HttpSession session) {
+        if (!LoginUtil.isLoggedIn(session)){
+            return ResponseEntity.status(403).body("로그인이 필요합니두");
+        }
         log.info("like!");
         String account = LoginUtil.getLoggedUser(session);
         ReactionDto dto = reactionService.like(bno, account);
@@ -114,6 +117,9 @@ public class BoardController {
     @GetMapping("/dislike")
     @ResponseBody
     public ResponseEntity<?> dislike(long bno, HttpSession session) {
+        if (!LoginUtil.isLoggedIn(session)){
+            return ResponseEntity.status(403).body("로그인이 필요합니두");
+        }
         log.info("dislike!");
         String account = LoginUtil.getLoggedUser(session);
         ReactionDto dto = reactionService.dislike(bno, account);

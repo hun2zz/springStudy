@@ -7,6 +7,7 @@ import com.study.springStudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardWriterDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import com.study.springStudy.springmvc.chap04.mapper.BoardMapper;
+import com.study.springStudy.springmvc.chap05.entity.Reaction;
 import com.study.springStudy.springmvc.chap05.entity.ViewLog;
 import com.study.springStudy.springmvc.chap05.mapper.ReactionMapper;
 import com.study.springStudy.springmvc.chap05.mapper.ReplyMapper;
@@ -61,8 +62,19 @@ public class BoardService {
         // 비회원이거나 본인 글이면 조회수 증가 방지
         String currentUserAccount = getLoggedUser(session);
         int boardNo = b.getBoardNo(); // 게시물 번호
+
+        //상세조회시 초기렌더링에 그려질 데이터
+        BoardDetailResponseDto responseDto = new BoardDetailResponseDto(b);
+        responseDto.setLikeCount(reactionMapper.countLikes(bno));
+        responseDto.setDisLikeCount(reactionMapper.countDisLikes(bno));
+        Reaction reaction = reactionMapper.findOne(bno, currentUserAccount);
+        String type = null;
+        if (reaction != null) {
+            type = reaction.getReactionType().toString();
+        }
+        responseDto.setUserReaction(type);
         if (!isLoggedIn(session) || b.getAccount().equals(currentUserAccount)) {
-            return new BoardDetailResponseDto(b);
+            return responseDto;
         }
 
         // 조회수가 올라가는 조건처리 (쿠키버전)
@@ -94,7 +106,7 @@ public class BoardService {
         if (shouldIncrease){
             boardMapper.updateLook(boardNo);
         }
-        return new BoardDetailResponseDto(b);
+        return responseDto;
     }
 
 

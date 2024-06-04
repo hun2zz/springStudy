@@ -27,14 +27,14 @@
     <div class="reaction-buttons">
       <button id="like-btn">
         <i class="fas fa-thumbs-up"></i> 좋아요
-        <span id="like-count">0</span>
+        <span id="like-count">${num.likeCount}</span>
       </button>
       <button
               id="dislike-btn"
               class="dislike-btn"
       >
         <i class="fas fa-thumbs-down"></i> 싫어요
-        <span id="dislike-count">0</span>
+        <span id="dislike-count">${num.disLikeCount}</span>
       </button>
     </div>
 
@@ -147,11 +147,19 @@
 </div>
   <script type="module" src="/assets/js/reply.js"></script>
   <script>
+
+    //렌더링 ㅇ초기에 버튼활성화
+    const userReaction = '${num.userReaction}'
+    updateReactionButtons(userReaction);
     //서버에 좋아요, 싫어요 요청을 보내는 함수
     async function sendReaction(reactionType) {
       console.log(reactionType)
       const bno = document.getElementById('wrap').dataset.bno;
       const res = await fetch(`/board/\${reactionType}?bno=\${bno}`);
+      if (res.status === 403) {
+        alert('로그인이 필요한데?ㅋㅋ')
+        return
+      }
       const { likeCount, disLikeCount, userReaction } = await res.json();
 
       document.getElementById('like-count').textContent = likeCount;
