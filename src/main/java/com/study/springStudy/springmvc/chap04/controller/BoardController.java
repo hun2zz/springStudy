@@ -10,6 +10,7 @@ import com.study.springStudy.springmvc.chap04.dto.BoardWriterDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import com.study.springStudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springStudy.springmvc.chap04.service.BoardService;
+import com.study.springStudy.springmvc.chap05.dto.response.ReactionDto;
 import com.study.springStudy.springmvc.chap05.service.ReactionService;
 import com.study.springStudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
@@ -104,8 +105,8 @@ public class BoardController {
     public ResponseEntity<?> like(long bno, HttpSession session) {
         log.info("like!");
         String account = LoginUtil.getLoggedUser(session);
-        reactionService.like(bno, account);
-        return null;
+        ReactionDto dto = reactionService.like(bno, account);
+        return ResponseEntity.ok().body(dto);
     }
 
 
@@ -115,7 +116,7 @@ public class BoardController {
     public ResponseEntity<?> dislike(long bno, HttpSession session) {
         log.info("dislike!");
         String account = LoginUtil.getLoggedUser(session);
-        reactionService.dislike(bno, account);
-        return null;
+        ReactionDto dto = reactionService.dislike(bno, account);
+        return ResponseEntity.ok().body(dto);
     }
 }

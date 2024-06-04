@@ -152,7 +152,32 @@
       console.log(reactionType)
       const bno = document.getElementById('wrap').dataset.bno;
       const res = await fetch(`/board/\${reactionType}?bno=\${bno}`);
+      const { likeCount, disLikeCount, userReaction } = await res.json();
 
+      document.getElementById('like-count').textContent = likeCount;
+      document.getElementById('dislike-count').textContent = disLikeCount;
+
+      //버튼 활성화 스타일 처이
+      updateReactionButtons(userReaction);
+
+
+
+    }
+    function updateReactionButtons(userReaction) {
+      const $likeBtn = document.getElementById('like-btn');
+      const $disLikeBtn = document.getElementById('dislike-btn');
+      const ACTIVE = 'active';
+ // 좋아요버튼이 눌렸을 경우
+      if (userReaction === 'LIKE') {
+        $likeBtn.classList.add(ACTIVE);
+        $disLikeBtn.classList.remove(ACTIVE);
+      } else if (userReaction === 'DISLIKE') {
+        $disLikeBtn.classList.add(ACTIVE);
+        $likeBtn.classList.remove(ACTIVE);
+      } else {
+        $disLikeBtn.classList.remove(ACTIVE);
+        $likeBtn.classList.remove(ACTIVE);
+      }
     }
     //좋아요 클릭 이벤트
     document.getElementById('like-btn').addEventListener('click', e=>{
