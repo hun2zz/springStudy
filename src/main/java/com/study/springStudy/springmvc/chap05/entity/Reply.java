@@ -28,4 +28,6 @@ public class Reply {
     private String replyWriter;
     private LocalDateTime replyDate;
     private long boardNo;
+    @Setter
+    private String account;
 }

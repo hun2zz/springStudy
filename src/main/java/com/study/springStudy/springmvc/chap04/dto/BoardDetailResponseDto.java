@@ -17,6 +17,8 @@ public class BoardDetailResponseDto {
     private String title;
     private String content;
     private String regDateTime;
+    @Setter
+    private boolean loginTrue;
 
 
     @Setter
@@ -38,5 +40,6 @@ public class BoardDetailResponseDto {
         DateTimeFormatter pattern
                 = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a hh시 mm분 ss초");
         this.regDateTime = pattern.format(b.getRegDateTime());
+
     }
 }

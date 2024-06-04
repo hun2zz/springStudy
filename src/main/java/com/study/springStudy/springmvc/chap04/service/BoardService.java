@@ -52,19 +52,27 @@ public class BoardService {
 
     public BoardDetailResponseDto detail(int bno,
                                          HttpServletRequest request,
-                                         HttpServletResponse response) {
+                                         HttpServletResponse response
+
+    ) {
 
         // 게시물 정보 조회
         Board b = boardMapper.findOne(bno);
 
         HttpSession session = request.getSession();
-
+        System.out.println("session as,ndkasdnkasdnaksdnaskdn= " + LoginUtil.getLoggedUser(session));
         // 비회원이거나 본인 글이면 조회수 증가 방지
         String currentUserAccount = getLoggedUser(session);
         int boardNo = b.getBoardNo(); // 게시물 번호
 
         //상세조회시 초기렌더링에 그려질 데이터
         BoardDetailResponseDto responseDto = new BoardDetailResponseDto(b);
+        if (LoginUtil.getLoggedUser(session) == null) {
+            responseDto.setLoginTrue(false);
+        }else {
+            responseDto.setLoginTrue(true);
+        }
+
         responseDto.setLikeCount(reactionMapper.countLikes(bno));
         responseDto.setDisLikeCount(reactionMapper.countDisLikes(bno));
         Reaction reaction = reactionMapper.findOne(bno, currentUserAccount);

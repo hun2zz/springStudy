@@ -1,5 +1,6 @@
 import {BASE_URL} from "./reply.js";
 import {showSpinner, hideSpinner} from "./spinner.js";
+import { callApi } from "./api.js";
 
 function getRelativeTime(createAt) {
     //현재 시간
@@ -100,7 +101,7 @@ function renderPage({begin, end, pageInfo, prev, next}) {
 
 }
 
-export function renderReplies({replies, pageInfo}) {
+export function renderReplies(replies) {
     // 댓글 수 렌더링
 
     document.getElementById('replyCnt').textContent = `${pageInfo.totalCount}`
@@ -120,7 +121,7 @@ export function renderReplies({replies, pageInfo}) {
         <div class='row'>
             <div class='col-md-9'>${text}</div>
             <div class='col-md-3 text-right'>
-                <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;
+                <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>${replies.account}</a>&nbsp;
                 <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>
             </div>
         </div>
@@ -146,6 +147,7 @@ export async function fetchReplies(pageNo = 1) {
     const replies = await res.json();
 
     // 댓글 목록 렌더링
+
     renderReplies(replies)
 }
 
@@ -164,12 +166,12 @@ let currentPage = 1; // 현재 무한 스크롤 시 진행되고 잇는 페이�
 let isFetching = false; // 데이터를 불러오는 중에는 더 가져오지 않게 제어하기 위한 논리 변수
 let totalReplies = 0; //총 댓글 수
 let loadedReplies = 0; // 로딩된 댓글 수
-function appendReplies({ replies }) {
-
+function appendReplies({ replies, account}) {
+    const loginAccount = account;
     // 댓글 목록 렌더링
     let tag = '';
     if (replies && replies.length > 0) {
-        replies.forEach(({ reply_no: rno, writer, text, createAt }) => {
+        replies.forEach(({ reply_no: rno, writer, text, createAt, account }) => {
             tag += `
         <div id='replyContent' class='card-body' data-reply-id='${rno}'>
             <div class='row user-block'>
@@ -183,8 +185,10 @@ function appendReplies({ replies }) {
             <div class='row'>
                 <div class='col-md-9'>${text}</div>
                 <div class='col-md-3 text-right'>
+                   ${account === loginAccount ? `
                     <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;
                     <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>
+                    ` : ''}
                 </div>
             </div>
         </div>
@@ -210,6 +214,7 @@ export async function fetchInfScrollReplies(pageNo=1) {
     const bno = document.getElementById('wrap').dataset.bno; // 게시물 글번호
     const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
     const replies = await res.json();
+
     if (pageNo === 1 ) {
         //총 댓글 수 전역변수 값 세팅
         totalReplies = replies.pageInfo.totalCount;

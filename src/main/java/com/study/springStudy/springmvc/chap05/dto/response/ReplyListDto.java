@@ -14,5 +14,7 @@ import java.util.List;
 public class ReplyListDto {
     private PageMaker pageInfo;
     private List<ReplyDetailDto> replies;
+    @Setter
+    private String account;
 
 }
