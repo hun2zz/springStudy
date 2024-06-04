@@ -95,4 +95,9 @@ public class BoardController {
         model.addAttribute("ref", ref);
         return "board/detail";
     }
+
+    //4. 좋아요 요청 비동기 처리
+
+
+    //5. 싫어요 요청 비동기 처리
 }

@@ -17,6 +17,8 @@
         <typeAlias type="com.study.springStudy.springmvc.chap04.entity.Board" alias="board"/>
         <typeAlias type="com.study.springStudy.springmvc.chap05.entity.Reply" alias="reply"/>
         <typeAlias type="com.study.springStudy.springmvc.chap05.entity.Member" alias="member"/>
+        <typeAlias type="com.study.springStudy.springmvc.chap05.entity.ViewLog" alias="viewLog"/>
+        <typeAlias type="com.study.springStudy.springmvc.chap05.entity.Reaction" alias="reaction"/>
     </typeAliases>
 
 <!--    sql을 적어놓은 ...mapper.xml 파일들을 사용등록하는 영역-->
@@ -26,5 +28,7 @@
         <mapper resource="mappers/BoardMapper.xml" />
         <mapper resource="mappers/ReplyMapper.xml" />
         <mapper resource="mappers/MemberMapper.xml" />
+        <mapper resource="mappers/ViewLogMapper.xml" />
+        <mapper resource="mappers/ReactionMapper.xml" />
     </mappers>
 </configuration>

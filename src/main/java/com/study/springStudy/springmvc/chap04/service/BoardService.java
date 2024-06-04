@@ -7,7 +7,10 @@ import com.study.springStudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springStudy.springmvc.chap04.dto.BoardWriterDto;
 import com.study.springStudy.springmvc.chap04.entity.Board;
 import com.study.springStudy.springmvc.chap04.mapper.BoardMapper;
+import com.study.springStudy.springmvc.chap05.entity.ViewLog;
+import com.study.springStudy.springmvc.chap05.mapper.ReactionMapper;
 import com.study.springStudy.springmvc.chap05.mapper.ReplyMapper;
+import com.study.springStudy.springmvc.chap05.mapper.ViewLogMapper;
 import com.study.springStudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,8 +31,10 @@ import static com.study.springStudy.springmvc.util.LoginUtil.*;
 public class BoardService {
     private final BoardMapper boardMapper;
     private final ReplyMapper replyMapper;
+    private final ViewLogMapper viewLogMapper;
+    private final ReactionMapper reactionMapper;
 
-    public List<BoardListResponseDto> getList (Search page) {
+    public List<BoardListResponseDto> getList(Search page) {
         List<BoardFindAllDto> all = boardMapper.findAll(page);
 
         //조회해온 게시물 리스트에서 각 게시물들의 조회수를 확인하여
@@ -54,12 +59,41 @@ public class BoardService {
         HttpSession session = request.getSession();
 
         // 비회원이거나 본인 글이면 조회수 증가 방지
-        if (!isLoggedIn(session) || b.getAccount().equals(getLoggedUser(session))) {
+        String currentUserAccount = getLoggedUser(session);
+        int boardNo = b.getBoardNo(); // 게시물 번호
+        if (!isLoggedIn(session) || b.getAccount().equals(currentUserAccount)) {
             return new BoardDetailResponseDto(b);
         }
 
-        // 조회수가 올라가는 조건처리
-        if (shouldIncreaseViewCOunt(bno, request, response)) boardMapper.updateLook(bno);
+        // 조회수가 올라가는 조건처리 (쿠키버전)
+//        if (shouldIncreaseViewCOunt(bno, request, response)) boardMapper.updateLook(bno);
+//        return new BoardDetailResponseDto(b);
+        //조회수가 올라가는 조건처리 ( DB 버전 )
+        //1. 지금 조회하는 기록에 있는지 확인
+        ViewLog viewLog = viewLogMapper.findOne(currentUserAccount, boardNo);
+        boolean shouldIncrease = false; // 조회수 올려도 되는지 여부
+        ViewLog viewLogEntity = ViewLog.builder()
+                .account(currentUserAccount)
+                .boardNo(boardNo)
+                .viewTime(LocalDateTime.now())
+                .build();
+        if (viewLog == null) {
+            //2. 이 게시물이 이 회원에 의해 처음 조회됨
+            viewLogMapper.insertViewLog(viewLogEntity);
+            shouldIncrease = true;
+        } else {
+            //3. 조회기록이 있는 경우 - 1시간 이내 인지
+            //혹시 1시간이 지난 게시물인지 확인
+            LocalDateTime oneHourAgo = LocalDateTime.now().minusHours(1);
+            if (viewLog.getViewTime().isBefore(oneHourAgo)) {
+                viewLogMapper.updateViewLog(viewLogEntity);
+                shouldIncrease = true;
+            }
+
+        }
+        if (shouldIncrease){
+            boardMapper.updateLook(boardNo);
+        }
         return new BoardDetailResponseDto(b);
     }
 
