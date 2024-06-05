@@ -49,6 +49,7 @@ public class ReplyService {
         return getReplies(dto.getBno(), new Page(1, 10));
     }
 
+
     //댓글 삭제
     @Transactional
     public ReplyListDto remove(long boardNo) {

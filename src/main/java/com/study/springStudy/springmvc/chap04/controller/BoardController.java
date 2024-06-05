@@ -70,6 +70,7 @@ public class BoardController {
     }
 
 
+
     //4. 게시글 삭제 요청 /board/delete : (GET)
     //-> 삭제 완료하고 조회요청 리다이렉션.
     @GetMapping("delete")

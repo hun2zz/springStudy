@@ -25,8 +25,17 @@ public class LoginUtil {
     }
 
 
+
+
+
     public static LoginUserInfoDto getLogUser(HttpSession session) {
         return (LoginUserInfoDto) session.getAttribute(LOGIN);
+    }
+
+    public static String getAuth(HttpSession session) {
+        LoginUserInfoDto loggedInUser = getLogUser(session);
+        if (loggedInUser == null) return null;
+        return loggedInUser.getAuth();
     }
 
     public static boolean isAdmin(HttpSession session) {

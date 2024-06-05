@@ -48,8 +48,9 @@ public class ReplyApiController {
         }
         log.info("/api/v1/replies/{}", bno);
         ReplyListDto replies = replyService.getReplies(bno, new Page(pageNo, 10));
+        String auth = LoginUtil.getAuth(session);
+        replies.setAuth(auth);
         replies.setAccount(LoginUtil.getLoggedUser(session));
-//        log.debug("first reply : {}", replies.get(0));
         return ResponseEntity.ok().body(replies);
     }
 

@@ -166,7 +166,8 @@ let currentPage = 1; // 현재 무한 스크롤 시 진행되고 잇는 페이�
 let isFetching = false; // 데이터를 불러오는 중에는 더 가져오지 않게 제어하기 위한 논리 변수
 let totalReplies = 0; //총 댓글 수
 let loadedReplies = 0; // 로딩된 댓글 수
-function appendReplies({ replies, account}) {
+function appendReplies({ replies, account, auth}) {
+    console.log(replies)
     const loginAccount = account;
     // 댓글 목록 렌더링
     let tag = '';
@@ -185,7 +186,7 @@ function appendReplies({ replies, account}) {
             <div class='row'>
                 <div class='col-md-9'>${text}</div>
                 <div class='col-md-3 text-right'>
-                   ${account === loginAccount ? `
+                   ${account === loginAccount || auth === 'ADMIN' ? `
                     <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;
                     <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>
                     ` : ''}
@@ -214,6 +215,7 @@ export async function fetchInfScrollReplies(pageNo=1) {
     const bno = document.getElementById('wrap').dataset.bno; // 게시물 글번호
     const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
     const replies = await res.json();
+    console.log(replies)
 
     if (pageNo === 1 ) {
         //총 댓글 수 전역변수 값 세팅

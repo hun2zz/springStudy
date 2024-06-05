@@ -20,6 +20,9 @@ public class BoardDetailResponseDto {
     @Setter
     private boolean loginTrue;
 
+    @Setter
+    private String auth;
+
 
     @Setter
     private int likeCount;

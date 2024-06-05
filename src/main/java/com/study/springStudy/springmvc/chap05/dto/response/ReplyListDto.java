@@ -16,5 +16,7 @@ public class ReplyListDto {
     private List<ReplyDetailDto> replies;
     @Setter
     private String account;
+    @Setter
+    private String auth;
 
 }
