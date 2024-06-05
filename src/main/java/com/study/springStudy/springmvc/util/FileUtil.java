@@ -4,6 +4,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public class FileUtil {
@@ -25,12 +29,37 @@ public class FileUtil {
 
         //원본 파일명을 중복이 없는 랜덤 파일명으로 변경.
         String newFilename = UUID.randomUUID() + "_" +file.getOriginalFilename();
+        //이 첨부파일을 날짜별로 관리하기 위해 날짜 폴더를 생성
+        String newUploadPath = makeDateFormatDirectory(rootPath);
         try {
-            file.transferTo(new File(rootPath, newFilename));
+            file.transferTo(new File(newUploadPath, newFilename));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return "";
 
+    }
+
+    private static String makeDateFormatDirectory(String rootPath) {
+        // 오늘 날짜 정보를 추출
+        LocalDate now = LocalDate.now();
+        int year = now.getYear(); ///년도
+        int month = now.getMonthValue(); ///월
+        int day = now.getDayOfMonth(); // 일
+
+        List<String> dateList = List.of(year + "",len2(month) ,len2(day));
+        String newDirectoryPath = rootPath;
+        for (String s : dateList) {
+            newDirectoryPath += "/" + s;
+            File f = new File(newDirectoryPath);
+            if (!f.exists()) f.mkdir();
+
+        }
+        return newDirectoryPath;
+    }
+
+    //앞에 0 붙이기 한글자들만! ex 8을 받으면 08 3은 03 처럼.
+    private static String len2(int n) {
+        return new DecimalFormat("00").format(n);
     }
 }
