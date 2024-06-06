@@ -4,6 +4,7 @@ package com.study.springStudy.springmvc.chap05.mapper;
 import com.study.springStudy.springmvc.chap04.comon.Page;
 import com.study.springStudy.springmvc.chap05.dto.request.ReplyUpdateDto;
 import com.study.springStudy.springmvc.chap05.dto.response.ReplyDetailDto;
+import com.study.springStudy.springmvc.chap05.dto.response.ReplyFindAllDto;
 import com.study.springStudy.springmvc.chap05.entity.Reply;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,7 +23,7 @@ public interface ReplyMapper {
     boolean delete(long replyNo);
 
     // 내가 선택한 게시물에 달린 댓글 목록 조회
-    List<Reply> findAll(@Param("bno")long replyNo,@Param("p") Page page);
+    List<ReplyFindAllDto> findAll(@Param("bno")long replyNo, @Param("p") Page page);
 
     //총 댓글 수 조회
     int count(long boardNo);

@@ -3,8 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
+    <%@include file="../include/static-head.jsp"%>
 
     <style>
         #img-input {
@@ -15,6 +14,7 @@
             height: 150px;
             border: 3px dashed orange;
             display: flex;
+            margin-top: 100px;
             justify-content: center;
             align-items: center;
             color: red;
@@ -22,9 +22,9 @@
             cursor: pointer;
         }
     </style>
-
 </head>
 <body>
+<%@include file="../include/header.jsp"%>
 
 <h1>파일 업로드 예제</h1>
 

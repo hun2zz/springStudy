@@ -18,6 +18,7 @@ function getRelativeTime(createAt) {
     const weeks = Math.floor(diff / 1000 / 60 / 60 / 24 / 7);
     const years = Math.floor(diff / 1000 / 60 / 60 / 24 / 365);
 
+
     if (seconds < 60) {
         return '방금 전';
     } else if (minutes < 60) {
@@ -147,7 +148,7 @@ export async function fetchReplies(pageNo = 1) {
     const replies = await res.json();
 
     // 댓글 목록 렌더링
-
+    console.log(replies)
     renderReplies(replies)
 }
 
@@ -172,12 +173,21 @@ function appendReplies({ replies, account, auth}) {
     // 댓글 목록 렌더링
     let tag = '';
     if (replies && replies.length > 0) {
-        replies.forEach(({ reply_no: rno, writer, text, createAt, account }) => {
+        replies.forEach(({ reply_no: rno, writer, text, createAt, account, profile}) => {
             tag += `
         <div id='replyContent' class='card-body' data-reply-id='${rno}'>
             <div class='row user-block'>
                 <span class='col-md-3'>
                     <b>${writer}</b>
+                    ${profile !== null ? `
+                  <div class="profile-box">
+                        <img src="${profile}" alt="profile image">
+                        </div>
+                    ` : `
+                      <div class="profile-box">
+                            <img src="/assets/img/anonymous.jpg" alt="profile image">
+                      </div>`
+            }
                 </span>
                 <span class='offset-md-6 col-md-3 text-right'><b>${getRelativeTime(
                 createAt
@@ -215,7 +225,7 @@ export async function fetchInfScrollReplies(pageNo=1) {
     const bno = document.getElementById('wrap').dataset.bno; // 게시물 글번호
     const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
     const replies = await res.json();
-    console.log(replies)
+
 
     if (pageNo === 1 ) {
         //총 댓글 수 전역변수 값 세팅
@@ -230,7 +240,6 @@ export async function fetchInfScrollReplies(pageNo=1) {
     }
 
     // 댓글 목록 렌더링
-    // console.log(replies)
     appendReplies(replies)
     currentPage = pageNo;
     isFetching = false;
@@ -260,3 +269,5 @@ async function scrollHandler(e) {
 export function setupInfiniteScroll() {
     window.addEventListener('scroll', scrollHandler)
 }
+
+

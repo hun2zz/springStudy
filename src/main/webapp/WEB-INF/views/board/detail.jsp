@@ -55,7 +55,7 @@
             <div class="card">
                 <div class="card-body">
                     <c:if test="${!num.loginTrue}">
-                        <a href="/members/sign-in">댓글은 로그인 후 작성해주세요!!</a>
+                        <a href="/members/sign-in?redirect=/board/detail?bno=${num.boardNo}">댓글은 로그인 후 작성해주세요!!</a>
                     </c:if>
 
                     <c:if test="${num.loginTrue}">
@@ -77,7 +77,16 @@
                                     <button id="replyAddBtn" type="button"
                                             class="btn btn-dark form-control">등록
                                     </button>
-                                </div>
+                                    <div class="profile-box">
+                                        <c:choose>
+                                            <c:when test="${login != null && login.profileImg != null}">
+                                                <img src="${login.profileImg}" alt="profile image">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img src="/assets/img/anonymous.jpg" alt="profile image">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>                                </div>
                             </div>
                         </div>
                     </c:if>

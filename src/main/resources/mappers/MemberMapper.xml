@@ -11,9 +11,9 @@
 <mapper namespace="com.study.springStudy.springmvc.chap05.mapper.MemberMapper">
     <insert id="save">
         INSERT INTO tbl_member
-            (account, password, name, email)
+            (account, password, name, email, profile_img)
         VALUES
-            (#{account}, #{password}, #{name}, #{email})
+            (#{account}, #{password}, #{name}, #{email}, #{profileImg})
     </insert>
 
     <select id="findOne" resultType="member">
@@ -23,7 +23,8 @@
             name,
             email,
             auth,
-            reg_date
+            reg_date,
+            profile_img
         FROM tbl_member
         WHERE account = #{account}
     </select>
@@ -48,7 +49,7 @@
 
     <select id="findMemberBySessionId" resultType="member">
         SELECT
-            account, name, email, auth, limit_time
+            account, name, email, auth, limit_time, profile_img
         FROM tbl_member
         WHERE session_id = #{sessionId}
     </select>

@@ -4,6 +4,7 @@ package com.study.springStudy.springmvc.chap05.api;
 import com.study.springStudy.springmvc.chap04.comon.Page;
 import com.study.springStudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springStudy.springmvc.chap05.dto.request.ReplyUpdateDto;
+import com.study.springStudy.springmvc.chap05.dto.response.LoginUserInfoDto;
 import com.study.springStudy.springmvc.chap05.dto.response.ReplyDetailDto;
 import com.study.springStudy.springmvc.chap05.dto.response.ReplyListDto;
 import com.study.springStudy.springmvc.chap05.entity.Reply;
@@ -23,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.study.springStudy.springmvc.util.LoginUtil.LOGIN;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -34,7 +37,6 @@ import java.util.Map;
 // localhost의 5500번 포트만 허용시킴.
 public class ReplyApiController {
     private final ReplyService replyService;
-
     //댓글 목록 조회 요청
     // URL : /api/v1/replies/원본글번호    - GET - > 목록조회
     // @PathVariable : URL에 붙어있는 변수값을 읽는 아노테이션
@@ -51,6 +53,7 @@ public class ReplyApiController {
         String auth = LoginUtil.getAuth(session);
         replies.setAuth(auth);
         replies.setAccount(LoginUtil.getLoggedUser(session));
+        replies.setProfileImg(LoginUtil.getLoggedUserProfile(session));
         return ResponseEntity.ok().body(replies);
     }
 
@@ -102,7 +105,6 @@ public class ReplyApiController {
 
     private Map<String, String> makeValidatonMessageMap(BindingResult result) {
         Map<String, String> errors = new HashMap<>();
-
         //에러 정보가 모여있는 리스트
         List<FieldError> fieldErrors = result.getFieldErrors();
         for (FieldError error : fieldErrors) {

@@ -38,13 +38,13 @@ public class MemberService {
     private final BoardMapper boardMapper;
 
     //회원 가입 중간 처리
-    public boolean join(SignUpDto dto) {
+    public boolean join(SignUpDto dto, String profilePath) {
         // dto를 엔터티로 변환
         Member member = dto.toEntity();
+        member.setProfileImg(profilePath);
         member.setPassword(encoder.encode(dto.getPassword()));
 
         //비밀번호를 인코딩 ( 암호화 )
-
         return memberMapper.save(member);
     }
 

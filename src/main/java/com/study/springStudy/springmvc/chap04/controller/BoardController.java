@@ -100,6 +100,7 @@ public class BoardController {
         return "board/detail";
     }
 
+
     //4. 좋아요 요청 비동기 처리
     @GetMapping("/like")
     @ResponseBody

@@ -19,9 +19,15 @@ public class LoginUtil {
     }
 
 
+
     public static String getLoggedUser (HttpSession session) {
         LoginUserInfoDto currentUser = (LoginUserInfoDto) session.getAttribute(LOGIN);
         return  (currentUser != null) ? currentUser.getAccount() : null;
+    }
+
+    public static String getLoggedUserProfile (HttpSession session) {
+        LoginUserInfoDto currentUser = (LoginUserInfoDto) session.getAttribute(LOGIN);
+        return  (currentUser != null) ? currentUser.getProfileImg() : null;
     }
 
 

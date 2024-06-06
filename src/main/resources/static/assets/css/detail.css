@@ -163,3 +163,42 @@ button.list-btn {
     background-color: #f44336;
     color: #fff;
 }
+
+
+
+
+
+#replyContent .user-block .col-md-3 .profile-box{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    top: -30px;
+    right:  -50px;
+}
+
+
+#replyContent .user-block .col-md-3 .profile-box img{
+    width: 100%;
+    height: 100%;
+}
+
+
+.col-md-3 .form-group .profile-box{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    /*position: relative;*/
+    /*top: -30px;*/
+    /*right:  -50px;*/
+    margin-left: 50px;
+    margin-top: 40px;
+}
+
+
+.col-md-3 .form-group .profile-box img{
+    width: 100%;
+    height: 100%;
+}

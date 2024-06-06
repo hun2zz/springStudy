@@ -19,18 +19,14 @@ public class BoardDetailResponseDto {
     private String regDateTime;
     @Setter
     private boolean loginTrue;
-
     @Setter
     private String auth;
-
-
     @Setter
     private int likeCount;
     @Setter
     private int disLikeCount;
     @Setter
     private String userReaction;
-
 //    @Setter
 //    private List<Reply> replies;
 

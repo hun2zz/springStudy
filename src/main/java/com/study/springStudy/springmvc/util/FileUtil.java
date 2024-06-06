@@ -36,7 +36,16 @@ public class FileUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
+        //파일 전체 경로
+
+        //D:/spring_prj/upload/2024/06/05/asdasdasd_dog.jpg
+        String fullPath = newUploadPath + "/" + newFilename;
+
+        String urlPath = "/local"+fullPath.substring(rootPath.length());
+
+        //업로드가 완료되면 데이터베이스에 파일의 경로 위치를 저장
+
+        return urlPath;
 
     }
 
