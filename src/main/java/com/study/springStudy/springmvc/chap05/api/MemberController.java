@@ -138,4 +138,8 @@ public class MemberController {
         System.out.println("zzzzz");
         return "upload/upload-form";
     }
+
+    @PostMapping("/profile-update")
+    @ResponseBody
+    public ResponseEntity<?>
 }

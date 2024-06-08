@@ -47,6 +47,12 @@
 
     </update>
 
+    <update id="updateUserProfile">
+        UPDATE tbl_member
+        SET profile_img = #{profileImg}
+        WHERE account = #{account}
+    </update>
+
     <select id="findMemberBySessionId" resultType="member">
         SELECT
             account, name, email, auth, limit_time, profile_img
