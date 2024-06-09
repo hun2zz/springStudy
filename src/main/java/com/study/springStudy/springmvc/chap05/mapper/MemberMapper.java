@@ -2,6 +2,7 @@ package com.study.springStudy.springmvc.chap05.mapper;
 
 
 import com.study.springStudy.springmvc.chap05.dto.request.AutoLoginDto;
+import com.study.springStudy.springmvc.chap05.dto.request.ProfileUpdateDto;
 import com.study.springStudy.springmvc.chap05.entity.Member;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -28,4 +29,6 @@ public interface MemberMapper {
 
     //세션 아이디로 회원정보 조회
     Member findMemberBySessionId(String sessionId);
+
+    boolean updateUserProfile (String profileImg, String account);
 }

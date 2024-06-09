@@ -4,6 +4,7 @@ package com.study.springStudy.springmvc.chap05.service;
 import com.study.springStudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springStudy.springmvc.chap05.dto.request.AutoLoginDto;
 import com.study.springStudy.springmvc.chap05.dto.request.LoginDto;
+import com.study.springStudy.springmvc.chap05.dto.request.ProfileUpdateDto;
 import com.study.springStudy.springmvc.chap05.dto.request.SignUpDto;
 import com.study.springStudy.springmvc.chap05.dto.response.LoginUserInfoDto;
 import com.study.springStudy.springmvc.chap05.entity.Member;
@@ -12,8 +13,10 @@ import com.study.springStudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.core.env.PropertyResolver;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
@@ -36,6 +39,7 @@ public class MemberService {
     private final PasswordEncoder encoder;
     private final ReplyService replyService;
     private final BoardMapper boardMapper;
+    private final PropertyResolver propertyResolver;
 
     //회원 가입 중간 처리
     public boolean join(SignUpDto dto, String profilePath) {
@@ -46,6 +50,11 @@ public class MemberService {
 
         //비밀번호를 인코딩 ( 암호화 )
         return memberMapper.save(member);
+    }
+
+    public boolean updateImage (ProfileUpdateDto dto, String profilePath, HttpSession session) {
+        String loggedUser = LoginUtil.getLoggedUser(session);
+        return memberMapper.updateUserProfile(profilePath, loggedUser);
     }
 
 

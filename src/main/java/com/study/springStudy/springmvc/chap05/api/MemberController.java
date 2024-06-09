@@ -2,6 +2,7 @@ package com.study.springStudy.springmvc.chap05.api;
 
 
 import com.study.springStudy.springmvc.chap05.dto.request.LoginDto;
+import com.study.springStudy.springmvc.chap05.dto.request.ProfileUpdateDto;
 import com.study.springStudy.springmvc.chap05.dto.request.SignUpDto;
 import com.study.springStudy.springmvc.chap05.dto.response.LoginUserInfoDto;
 import com.study.springStudy.springmvc.chap05.service.LoginResult;
@@ -141,5 +142,18 @@ public class MemberController {
 
     @PostMapping("/profile-update")
     @ResponseBody
-    public ResponseEntity<?>
+    public ResponseEntity<?> changeProfileImg (ProfileUpdateDto dto, HttpSession session ) {
+        System.out.println("ss");
+        MultipartFile profileImage = dto.getProfileImage();
+        String profilePath = null;
+        if (profileImage.isEmpty()){
+            log.debug("attached profile image name : {} ", profileImage.getOriginalFilename());
+            //서버에 업로드 후 업로드 경로 반환
+            profilePath = FileUtil.uploadFile(rootPath, dto.getProfileImage());
+
+        }
+
+        boolean flag = memberService.updateImage(dto, profilePath, session);
+        return ResponseEntity.ok().body(flag);
+    }
 }

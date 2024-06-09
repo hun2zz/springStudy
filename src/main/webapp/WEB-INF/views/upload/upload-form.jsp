@@ -30,7 +30,7 @@
 
 <div class="upload-box">여기를 눌러 파일을 올려주세요</div>
 
-<form action="/upload/file" method="post" enctype="multipart/form-data">
+<form action="members/profile-update" method="post" enctype="multipart/form-data">
 
     <input type="file" name="thumbnail" id="img-input" accept="image/*">
 
