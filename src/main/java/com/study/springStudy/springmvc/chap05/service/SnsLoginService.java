@@ -1,7 +1,11 @@
 package com.study.springStudy.springmvc.chap05.service;
 
 
+import com.study.springStudy.springmvc.chap05.dto.request.SignUpDto;
 import com.study.springStudy.springmvc.chap05.dto.response.AccessTokenDto;
+import com.study.springStudy.springmvc.chap05.dto.response.KaKaoUserDto;
+import com.study.springStudy.springmvc.chap05.mapper.MemberMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -12,27 +16,49 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SnsLoginService {
+    private final MemberService memberService;
+    private final MemberMapper memberMapper;
     @Value("${sns.kakao.app-key}")
     private String appKey;
     @Value("${sns.kakao.redirect-uri}")
     private String redirectUri;
     //카카오 로그인 처리 서비스 로직
-    public void kakaoLogin(Map<Object, Object> requestParams) {
+    public void kakaoLogin(Map<Object, Object> requestParams, HttpSession  session) {
         //토큰 발급 요청
         String accessToken = getKakaoAccessToken(requestParams);
         
         //10 발급 받은 토큰으로 사용자 정보 가져오기
-        getKakaoUserInfo(accessToken);
+        KaKaoUserDto.Properties userInfo = getKakaoUserInfo(accessToken);
+
+        //11. 카카오에서 받은 회원정보로 우리 사이트 회원가입 시키기
+        //회원 중복확인
+        String account = userInfo.getNickname();
+        if(memberService.checkIdentifier("account",account)) {
+            throw new IllegalArgumentException("이미 가입한 회원입니다.");
+        }
+        memberService.join(
+                SignUpDto.builder()
+                        //카카오에서 계정을 못 가져왔기 때문에 임시로 닉네임, 패스워드를 함.
+                        .account(account).password("0000").name(account).email(account + "@abc.com").build(),
+                userInfo.getProfileImage()
+        );
+
+        //12. 우리 사이트 로그인 처리
+        MemberService.maintainLoginState(session, memberMapper.findOne(account));
+        //세션에 현재 로그인 방식에 대해 지정
+        session.setAttribute("loginPath", "kakao");
+
 
     }
     //토큰으로 사용자 정보 요청
-    private void getKakaoUserInfo(String accessToken) {
+    private KaKaoUserDto.Properties getKakaoUserInfo(String accessToken) {
         String requestUri = "https://kapi.kakao.com/v2/user/me";
         //헤더설정
         HttpHeaders headers = new HttpHeaders();
@@ -41,13 +67,14 @@ public class SnsLoginService {
 
         //11. 요청 보내기
         RestTemplate template = new RestTemplate();
-        ResponseEntity<Map> response = template.exchange(
-                requestUri, HttpMethod.POST, new HttpEntity<>(headers), Map.class
+        ResponseEntity<KaKaoUserDto> response = template.exchange(
+                requestUri, HttpMethod.POST, new HttpEntity<>(headers), KaKaoUserDto.class
         );
 
         //12. 응답 정보 JSON 꺼내기
-        Map json = response.getBody();
+        KaKaoUserDto json = response.getBody();
         log.debug("user profile - {}" , json);
+        return json.getProperties();
     }
 
     
